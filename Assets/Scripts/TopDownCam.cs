@@ -13,6 +13,7 @@ namespace SYC
         public float _lookAtHeight = 2f;        // 카메라와 목표 타겟의 높이
         public float _smoothSpeed = 0.5f;      // 카메라가 이동할 때 부드럽게 하기 위한 변스
 
+
         Vector3 _refVelocity;       // 내부개선을 위한 변수
 
         public Transform _target;
