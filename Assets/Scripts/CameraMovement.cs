@@ -5,6 +5,8 @@ using UnityEngine;
 
 public class CameraMovement : MonoBehaviour
 {
+    public static CameraMovement instance;
+
     [SerializeField] Transform _objectFollow;
     [SerializeField] float _followSpeed = 10f;
     [SerializeField] float _sensitivity = 100f;
@@ -24,6 +26,15 @@ public class CameraMovement : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        if (instance == null)
+        {
+            DontDestroyOnLoad(this.gameObject);
+            instance = this;
+        }
+
+        else
+            Destroy(this.gameObject);
+
         _rotX = transform.localRotation.eulerAngles.x;
         _rotX = transform.localRotation.eulerAngles.y;
 
@@ -51,6 +62,7 @@ public class CameraMovement : MonoBehaviour
 
         _finalDir = transform.TransformPoint(_dirNormalized * _maxDist);
 
+        /*
         RaycastHit hit;
 
         if (Physics.Linecast(transform.position, _finalDir, out hit))
@@ -60,5 +72,6 @@ public class CameraMovement : MonoBehaviour
             _finalDist = _maxDist;
 
         _mainCamera.localPosition = Vector3.Lerp(_mainCamera.localPosition, _dirNormalized * _finalDist, Time.deltaTime * _smoothness);
+        */
     }
 }

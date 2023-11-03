@@ -1,9 +1,14 @@
+// 플레이어 스크립트
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
+    public static PlayerController instance;
+
+    public string _currentMapName;      // Portal 스크립트에 있는 transferMapName 변수의 값을 저장
+
     Animator _anim;
     Camera _camera;
     CharacterController _controller;
@@ -11,15 +16,30 @@ public class PlayerController : MonoBehaviour
     [SerializeField] float _speed = 5f;
     [SerializeField] float _runSpeed = 8f;
     [SerializeField] float _finalSpeed;
+    [SerializeField] float _gravity = -9.81f;
+    [SerializeField] float _jumpForce = 3f;
     [SerializeField] float _smoothness = 10f;
-    [SerializeField] bool _toggleCameraRotation;
+
     [SerializeField] bool _isRun;
+    [SerializeField] bool _toggleCameraRotation;
+
+    Vector3 _moveDirection;
 
     private void Awake()
     {
-        _anim = this.GetComponent<Animator>();
-        _camera = Camera.main;
-        _controller = this.GetComponent<CharacterController>();
+        if (instance == null)
+        {
+            DontDestroyOnLoad(this.gameObject);
+            _anim = this.GetComponent<Animator>();
+            _camera = Camera.main;
+            _controller = this.GetComponent<CharacterController>();
+            instance = this;
+        }
+
+        else
+            Destroy(this.gameObject);
+
+
     }
 
     // Update is called once per frame
@@ -38,6 +58,9 @@ public class PlayerController : MonoBehaviour
             _isRun = false;
 
         InputMovement();
+
+        if (_controller.isGrounded == false)
+            _moveDirection.y += _gravity * Time.deltaTime;
     }
 
     private void LateUpdate()
@@ -53,15 +76,27 @@ public class PlayerController : MonoBehaviour
     {
         _finalSpeed = (_isRun) ? _runSpeed : _speed;
 
-        Vector3 forward = transform.TransformDirection(Vector3.forward);
+        Vector3 forword = transform.TransformDirection(Vector3.forward);
         Vector3 right = transform.TransformDirection(Vector3.right);
 
-        Vector3 moveDir = forward * Input.GetAxisRaw("Vertical") + right * Input.GetAxisRaw("Horizontal");
+        Vector3 moveDir = right * Input.GetAxisRaw("Horizontal") + forword * Input.GetAxisRaw("Vertical");
 
         _controller.Move(moveDir.normalized * _finalSpeed * Time.deltaTime);
 
         float percent = ((_isRun) ? 1 : 0.5f) * moveDir.magnitude;
-        _anim.SetFloat("Speed", percent, 0.1f, Time.deltaTime);     // dampTime : 0.1안에 즉각적인 반응?
 
+        _anim.SetFloat("Speed", percent, 0.1f, Time.deltaTime) ;
+
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            JumpTo();
+            _anim.SetTrigger("DoJump");
+        }
+    }
+
+    void JumpTo()
+    {
+        if (_controller.isGrounded == true)
+            _moveDirection.y = _jumpForce;
     }
 }
