@@ -4,7 +4,7 @@ using UnityEngine;
 
 public abstract class State<T>
 {
-    protected FSM<T> _stateMacine;
+    protected FSM<T> _stateMachine;
     protected T _context;
 
     public State()
@@ -12,9 +12,9 @@ public abstract class State<T>
 
     }
 
-    internal void SetStateMachineAndContext(StateMachine<T> stateMachine, T context)
+    internal void SetMachineAndContext(FSM<T> stateMachine, T context)
     {
-        this._stateMacine = stateMachine;
+        this._stateMachine = stateMachine;
         this._context = context;
 
         OnInitialized();
@@ -30,10 +30,7 @@ public abstract class State<T>
 
     }
 
-    public abstract void Update(float deltaTime)
-    {
-
-    }
+    public abstract void Update(float deltaTime);
 
     public virtual void OnExit()
     {
@@ -57,7 +54,7 @@ public sealed class FSM<T>      // 더이상 변형이 없도록 sealed를 사용함
 
     Dictionary<System.Type, State<T>> _states = new Dictionary<System.Type, State<T>>();
 
-    public StateMachine(T context, State<T> initialState)
+    public FSM(T context, State<T> initialState)
     {
         this._context = context;
 
@@ -68,7 +65,7 @@ public sealed class FSM<T>      // 더이상 변형이 없도록 sealed를 사용함
 
     public void AddState(State<T> state)
     {
-        state.SetMachineAndContext(this._context);
+        state.SetMachineAndContext(this, _context);
         _states[state.GetType()] = state;
     }
 
@@ -79,9 +76,10 @@ public sealed class FSM<T>      // 더이상 변형이 없도록 sealed를 사용함
         _currentState.Update(deltaTme);
     }
 
-    public R ChangeState<R> where R : State<T>
+    public R ChangeState<R>() where R : State<T>
     {
         var newType = typeof(R);
+
         if (_currentState.GetType() == newType)
         {
             return _currentState as R;

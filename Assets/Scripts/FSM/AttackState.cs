@@ -4,15 +4,26 @@ using UnityEngine;
 
 public class AttackState : State<EnemyController>
 {
-    // Start is called before the first frame update
-    void Start()
+    Animator _anim;
+
+    int _hasAttack = Animator.StringToHash("Attack");
+
+    public override void OnInitialized()
     {
-        
+        _anim = _context.GetComponent<Animator>();
     }
 
-    // Update is called once per frame
-    void Update()
+    public override void OnEnter()
     {
-        
+        if (_context.IsAvailableAttack)
+            _anim?.SetTrigger(_hasAttack);
+
+        else
+            _stateMachine.ChangeState<IdleState>();
+    }
+
+    public override void Update(float deltaTime)
+    {
+
     }
 }

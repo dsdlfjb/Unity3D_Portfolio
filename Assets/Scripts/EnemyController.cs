@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class EnemyController : MonoBehaviour
 {
-    protected StateMachine<EnemyController> _stateMachine;
+    protected FSM<EnemyController> _stateMachine;
 
     public LayerMask _targetMask;
     public Transform _target;
@@ -14,9 +14,9 @@ public class EnemyController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        _stateMachine = new StateMachine<EnemyController>(this, new IdleState());    
-        _stateMachine = new AddState(new MoveState());
-        _stateMachine = new AddState(new AttackState()); 
+        _stateMachine = new FSM<EnemyController>(this, new IdleState());    
+        _stateMachine.AddState(new MoveState());
+        _stateMachine.AddState(new AttackState()); 
     }
 
     // Update is called once per frame

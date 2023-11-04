@@ -30,10 +30,10 @@ public class IdleState : State<EnemyController>
         if (enemy)
         {
             if (_context.IsAvailableAttack)
-                _stateMacine.ChangeState<AttackState>();
+                _stateMachine.ChangeState<AttackState>();
 
             else
-                _stateMacine.ChangeState<MoveState>();
+                _stateMachine.ChangeState<MoveState>();
         }
     }
 
