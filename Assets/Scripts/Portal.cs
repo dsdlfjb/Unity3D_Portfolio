@@ -10,12 +10,10 @@ public class Portal : MonoBehaviour
     public string _transferMapName;
 
     PlayerController _player;
-    FadeInOut _fade;
 
     private void Start()
     {
         _player = FindObjectOfType<PlayerController>();
-        _fade = FindObjectOfType<FadeInOut>();
     }
 
     private void OnTriggerEnter(Collider other)
@@ -29,7 +27,6 @@ public class Portal : MonoBehaviour
 
     IEnumerator Coroutine_ChangeScene()
     {
-        _fade.FadeIn();
         yield return new WaitForSeconds(1f);
         SceneManager.LoadScene(_transferMapName);
     }

@@ -6,7 +6,7 @@ public class AttackState : State<EnemyController>
 {
     Animator _anim;
 
-    int _hasAttack = Animator.StringToHash("Attack");
+    int _hashAttack = Animator.StringToHash("Attack");
 
     public override void OnInitialized()
     {
@@ -16,7 +16,7 @@ public class AttackState : State<EnemyController>
     public override void OnEnter()
     {
         if (_context.IsAvailableAttack)
-            _anim?.SetTrigger(_hasAttack);
+            _anim?.SetTrigger(_hashAttack);
 
         else
             _stateMachine.ChangeState<IdleState>();

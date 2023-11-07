@@ -4,11 +4,16 @@ using UnityEngine;
 
 public class IdleState : State<EnemyController>
 {
+    public bool _isPatrol = true;
+    float _minIdleTime = 0f;
+    float _maxIdleTime = 3f;
+    float _idleTime = 0f;
+
     Animator _anim;
     CharacterController _controller;
 
-    protected int _hasMove = Animator.StringToHash("IsMove");
-    protected int _hasMoveSpeed = Animator.StringToHash("Speed");
+    protected int _hashMove = Animator.StringToHash("IsMove");
+    protected int _hashMoveSpeed = Animator.StringToHash("Speed");
 
     public override void OnInitialized()
     {
@@ -18,9 +23,12 @@ public class IdleState : State<EnemyController>
 
     public override void OnEnter()
     {
-        _anim?.SetBool(_hasMove, false);
-        _anim?.SetFloat(_hasMoveSpeed, 0);
+        _anim?.SetBool(_hashMove, false);
+        _anim?.SetFloat(_hashMoveSpeed, 0);
         _controller?.Move(Vector3.zero);
+
+        if (_isPatrol)
+            _idleTime = Random.Range(_minIdleTime, _maxIdleTime);
     }
 
     public override void Update(float deltaTime)
@@ -35,6 +43,9 @@ public class IdleState : State<EnemyController>
             else
                 _stateMachine.ChangeState<MoveState>();
         }
+
+        else if (_isPatrol && _stateMachine.ElapsedTimeInState > _idleTime)
+            _stateMachine.ChangeState<PatrolState>();
     }
 
     public override void OnExit()

@@ -9,7 +9,7 @@ public class MoveState : State<EnemyController>
     CharacterController _controller;
     NavMeshAgent _agent;
 
-    int _hasMove = Animator.StringToHash("IsMove");
+    int _hashMove = Animator.StringToHash("IsMove");
     int _hasMoveSpeed = Animator.StringToHash("Speed");
 
     public override void OnInitialized()
@@ -21,8 +21,8 @@ public class MoveState : State<EnemyController>
 
     public override void OnEnter()
     {
-        _agent?.SetDestination(_context._target.position);
-        _anim?.SetBool(_hasMove, true);
+        _agent?.SetDestination(_context.Target.position);
+        _anim?.SetBool(_hashMove, true);
     }
 
     public override void Update(float deltaTime)
@@ -31,26 +31,23 @@ public class MoveState : State<EnemyController>
 
         if (enemy)
         {
-            _agent.SetDestination(_context._target.position);
+            _agent.SetDestination(_context.Target.position);
 
             if (_agent.remainingDistance > _agent.stoppingDistance)
             {
                 _controller.Move(_agent.velocity * deltaTime);
-                _anim.SetFloat(_hasMoveSpeed, _agent.velocity.magnitude / _agent.speed, 1f, deltaTime);
+                _anim.SetFloat(_hasMoveSpeed, _agent.velocity.magnitude / _agent.speed, .1f, deltaTime);
                 return;
             }
         }
 
-        if (!enemy && _agent.remainingDistance <= _agent.stoppingDistance)
-        {
             _stateMachine.ChangeState<IdleState>();
-        }
     }
 
     public override void OnExit()
     {
-        _anim?.SetBool(_hasMove, false);
-        _anim?.SetFloat(_hasMoveSpeed, 0f);
+        _anim?.SetBool(_hashMove, false);
+        //_anim?.SetFloat(_hasMoveSpeed, 0f);
         _agent.ResetPath();
     }
 }

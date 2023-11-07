@@ -18,7 +18,7 @@ public class CameraMovement : MonoBehaviour
     [SerializeField] float _minDist;
     [SerializeField] float _maxDist;
     [SerializeField] float _finalDist;
-    [SerializeField] float _smoothness = 10f;
+    //[SerializeField] float _smoothness = 10f;
 
     float _rotX;
     float _rotY;
