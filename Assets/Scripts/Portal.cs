@@ -28,6 +28,6 @@ public class Portal : MonoBehaviour
     IEnumerator Coroutine_ChangeScene()
     {
         yield return new WaitForSeconds(1f);
-        SceneManager.LoadScene(_transferMapName);
+        LoadingSceneController.Instance.LoadScene(_transferMapName);
     }
 }
