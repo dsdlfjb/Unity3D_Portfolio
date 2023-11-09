@@ -4,21 +4,25 @@ using UnityEngine;
 
 public class FieldOfView : MonoBehaviour
 {
+    [Header("Sight Settings")]
     public float _viewRaidius = 5f;
     [Range(0, 360)]
     public float _viewAngle = 90f;
+
+    [Header("Find Settings")]
+    public float _delay = 0.2f;
 
     public LayerMask _targetMask;
     public LayerMask _obstacleMask;
 
     List<Transform> _visibleTargets = new List<Transform>();
     Transform _nearestTarget;
-    float _distanceToTarget = 0f;
 
-    public float _delay = 0.2f;
+    float _distanceToTarget = 0f;
 
     public List<Transform> VisibleTargets => _visibleTargets;
     public Transform NearestTarget => _nearestTarget;
+    public float DistanceToTarget => _distanceToTarget;
 
     private void Start()
     {
@@ -46,6 +50,7 @@ public class FieldOfView : MonoBehaviour
         _visibleTargets.Clear();
 
         Collider[] targetsInViewRadius = Physics.OverlapSphere(transform.position, _viewRaidius, _targetMask);
+
         for (int i = 0; i < targetsInViewRadius.Length; i++)
         {
             Transform target = targetsInViewRadius[i].transform;
@@ -58,11 +63,13 @@ public class FieldOfView : MonoBehaviour
 
                 if (!Physics.Raycast(transform.position, dirToTarget, distToTarget, _obstacleMask))
                 {
-                    _visibleTargets.Add(target);
-
-                    if (_nearestTarget == null || (_distanceToTarget > distToTarget))
+                    if (target.GetComponent<IDamageable>()?.IsAlive ?? false)
                     {
-                        _nearestTarget = target;
+                        _visibleTargets.Add(target);
+
+                        if (_nearestTarget == null || (_distanceToTarget > distToTarget))
+                            _nearestTarget = target;
+
                         _distanceToTarget = distToTarget;
                     }
                 }

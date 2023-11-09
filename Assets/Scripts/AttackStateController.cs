@@ -19,12 +19,6 @@ public class AttackStateController : MonoBehaviour
         exitAttackStateHandler = new OnExitAttackState(ExitAttackState);
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
     public void OnStartOfAttackState()
     {
         IsInAttackState = true;
@@ -37,15 +31,9 @@ public class AttackStateController : MonoBehaviour
         exitAttackStateHandler();
     }
 
-    void EnterAttackState()
-    {
+    void EnterAttackState() { }
 
-    }
-
-    void ExitAttackState()
-    {
-
-    }
+    void ExitAttackState() { }
 
     public void OnCheckAttackCollider(int attackIndex)
     {

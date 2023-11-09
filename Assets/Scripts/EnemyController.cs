@@ -1,88 +1,66 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
-public class EnemyController : MonoBehaviour
+public abstract class EnemyController : MonoBehaviour
 {
     protected FSM<EnemyController> _stateMachine;
+    public virtual float AttackRange => 3f;
+
+    protected NavMeshAgent _agent;
+    protected Animator _anim;
 
     FieldOfView _fov;
-    //public LayerMask _targetMask;
-    //public Transform _target;
-    //public float _viewRadius;
-    public float _attackRange;
-    public Transform Target => _fov?.NearestTarget;
 
-    public Transform[] _wayPoints;
-    [HideInInspector]
-    public Transform _targetWayPoint = null;
-    int _wayPointIndex = 0;
+    public Transform Target => _fov.NearestTarget;
+    public LayerMask TargetMask => _fov._targetMask;
 
     // Start is called before the first frame update
-    void Start()
+    protected virtual void Start()
     {
-        _stateMachine = new FSM<EnemyController>(this, new PatrolState());
-        IdleState idleState = new IdleState();
-        idleState._isPatrol = true;
-        _stateMachine.AddState(idleState);
-        _stateMachine.AddState(new MoveState());
-        _stateMachine.AddState(new AttackState());
+        _stateMachine = new FSM<EnemyController>(this, new IdleState());
 
+        _agent = GetComponent<NavMeshAgent>();
+        _agent.updatePosition = false;
+        _agent.updateRotation = true;
+
+        _anim = GetComponent<Animator>();
         _fov = GetComponent<FieldOfView>();
     }
 
     // Update is called once per frame
-    void Update()
+    protected virtual void Update()
     {
         _stateMachine.Update(Time.deltaTime);
+
+        if (!(_stateMachine.CurrentState is MoveState) && !(_stateMachine.CurrentState is DeadState))
+            FaceTarget();
     }
 
-    public bool IsAvailableAttack
+    void FaceTarget()
     {
-        get
+        if (Target)
         {
-            if (!Target)
-                return false;
-
-            float distance = Vector3.Distance(transform.position, Target.position);
-            return (distance <= _attackRange);
+            Vector3 dir = (Target.position - transform.position).normalized;
+            Quaternion lookRotation = Quaternion.LookRotation(new Vector3(dir.x, 0, dir.z));
+            transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * 5f);
         }
     }
 
-    public Transform SearchEnemy()
+    private void OnAnimatorMove()
     {
-        return Target;
-        /*
-        _target = null;
+        Vector3 position = transform.position;
+        position.y = _agent.nextPosition.y;
 
-        Collider[] targetInViewRadius = Physics.OverlapSphere(transform.position, _viewRadius, _targetMask);
-
-        if (targetInViewRadius.Length > 0)
-            _target = targetInViewRadius[0].transform;
-
-        return _target;
-        */
+        _anim.rootPosition = position;
+        _agent.nextPosition = position;
     }
-    /*
-    private void OnDrawGizmos()
+
+    public virtual bool IsAvailableAttack => false;
+
+    public R ChangeState<R>() where R : State<EnemyController>
     {
-        Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(transform.position, _viewRadius);
-
-        Gizmos.color = Color.green;
-        Gizmos.DrawWireSphere(transform.position, _attackRange);
-    }
-    */
-
-    public Transform FindNextWayPoint()
-    {
-        _targetWayPoint = null;
-
-        if (_wayPoints.Length == 0)
-            _targetWayPoint = _wayPoints[_wayPointIndex];
-
-        _wayPointIndex = (_wayPointIndex + 1) % _wayPoints.Length;
-        
-        return _targetWayPoint;
+        return _stateMachine.ChangeState<R>();
     }
 }

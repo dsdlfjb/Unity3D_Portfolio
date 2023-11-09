@@ -9,8 +9,8 @@ public class MoveState : State<EnemyController>
     CharacterController _controller;
     NavMeshAgent _agent;
 
-    int _hashMove = Animator.StringToHash("IsMove");
-    int _hasMoveSpeed = Animator.StringToHash("Speed");
+    int _isMoveHash = Animator.StringToHash("IsMove");
+    int _moveSpeedHash = Animator.StringToHash("MoveSpeed");
 
     public override void OnInitialized()
     {
@@ -21,33 +21,41 @@ public class MoveState : State<EnemyController>
 
     public override void OnEnter()
     {
+        _agent.stoppingDistance = _context.AttackRange;
         _agent?.SetDestination(_context.Target.position);
-        _anim?.SetBool(_hashMove, true);
+
+        _anim?.SetBool(_isMoveHash, true);
     }
 
     public override void Update(float deltaTime)
     {
-        Transform enemy = _context.SearchEnemy();
-
-        if (enemy)
-        {
+        if (_context.Target)
             _agent.SetDestination(_context.Target.position);
 
-            if (_agent.remainingDistance > _agent.stoppingDistance)
+        _controller.Move(_agent.velocity * Time.deltaTime);
+
+        if (_agent.remainingDistance > _agent.stoppingDistance)
+            _anim.SetFloat(_moveSpeedHash, _agent.velocity.magnitude / _agent.speed, .1f, Time.deltaTime);
+
+        else
+        {
+            if (!_agent.pathPending)
             {
-                _controller.Move(_agent.velocity * deltaTime);
-                _anim.SetFloat(_hasMoveSpeed, _agent.velocity.magnitude / _agent.speed, .1f, deltaTime);
-                return;
+                _anim.SetFloat(_moveSpeedHash, 0);
+                _anim.SetBool(_isMoveHash, false);
+                _agent.ResetPath();
+
+                _stateMachine.ChangeState<IdleState>();
             }
         }
-
-            _stateMachine.ChangeState<IdleState>();
     }
 
     public override void OnExit()
     {
-        _anim?.SetBool(_hashMove, false);
-        //_anim?.SetFloat(_hasMoveSpeed, 0f);
+        _agent.stoppingDistance = 0f;
         _agent.ResetPath();
+
+        _anim?.SetBool(_isMoveHash, false);
+        _anim?.SetFloat(_moveSpeedHash, 0f);
     }
 }

@@ -15,13 +15,16 @@ public abstract class AttackBehaviour : MonoBehaviour
     public int _damage = 10;
     public float _range = 3f;
 
-    [SerializeField] protected float _coolTime;
+    [SerializeField] float _coolTime;
     protected float _calCoolTime = 0f;
 
     public GameObject _effectPrefab;
 
     [HideInInspector]
     public LayerMask _targetMask;
+
+    [SerializeField]
+    public bool IsAvailable => _calCoolTime >= _coolTime;
 
     // Start is called before the first frame update
     void Start()
