@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerController : MonoBehaviour
+public class PlayerController : MonoBehaviour, IAttackable, IDamageable
 {
     public static PlayerController instance;
 
@@ -24,6 +24,20 @@ public class PlayerController : MonoBehaviour
     [SerializeField] bool _toggleCameraRotation;
 
     Vector3 _moveDirection;
+
+    public float _maxHealth = 100f;
+    protected float _health;
+
+    public Transform _target;
+    [SerializeField] Transform _hitPoint;
+
+    readonly int _moveHash = Animator.StringToHash("Move");
+    readonly int _moveSpeedHash = Animator.StringToHash("MoveSpeed");
+    //readonly int fallingHash = Animator.StringToHash("Falling");
+    readonly int _attackTriggerHash = Animator.StringToHash("AttackTrigger");
+    readonly int _attackIndexHash = Animator.StringToHash("AttackIndex");
+    readonly int _hitTriggerHash = Animator.StringToHash("HitTrigger");
+    readonly int _isAliveHash = Animator.StringToHash("IsAlive");
 
     private void Awake()
     {
@@ -99,4 +113,44 @@ public class PlayerController : MonoBehaviour
         if (_controller.isGrounded == true)
             _moveDirection.y = _jumpForce;
     }
+
+    #region IAttackable Interfaces
+    [SerializeField] List<AttackBehaviour> _attackBehaviours = new List<AttackBehaviour>();
+
+    public AttackBehaviour CurrentAttackBehaviour { get; private set; }
+
+    public void OnExecuteAttack(int attackIndex)
+    {
+        if (CurrentAttackBehaviour != null)
+            CurrentAttackBehaviour.ExecuteAttack(_target.gameObject);
+    }
+    #endregion IAttackable Interfaces
+
+    #region IDamagable Interfaces
+    public bool IsAlive => _health > 0;
+
+    public void TakeDamage(int damage, GameObject damageEffectPrefab)
+    {
+        if (!IsAlive)
+        {
+            return;
+        }
+
+        _health -= damage;
+
+        if (damageEffectPrefab)
+        {
+            Instantiate<GameObject>(damageEffectPrefab, _hitPoint);
+        }
+
+        if (IsAlive)
+        {
+            _anim?.SetTrigger(_hitTriggerHash);
+        }
+        else
+        {
+            _anim?.SetBool(_isAliveHash, false);
+        }
+    }
+    #endregion IDamagable Interfaces
 }
