@@ -12,7 +12,7 @@ public class MeleeAttackBehaviour : AttackBehaviour
 
         foreach (Collider col in colliders)
         {
-            col.gameObject.GetComponent<IDamageable>()?.TakeDamage(_damage, _effectPrefab);
+            col.gameObject.GetComponent<IDamagable>()?.TakeDamage(_damage, _effectPrefab);
         }
 
         _calCoolTime = 0f;

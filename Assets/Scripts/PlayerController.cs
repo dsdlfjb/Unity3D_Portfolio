@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerController : MonoBehaviour, IAttackable, IDamageable
+public class PlayerController : MonoBehaviour, IAttackable, IDamagable
 {
     public static PlayerController instance;
 
