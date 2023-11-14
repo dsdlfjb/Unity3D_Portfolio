@@ -20,22 +20,13 @@ public abstract class State<T>
         OnInitialized();
     }
 
-    public virtual void OnInitialized()
-    {
+    public virtual void OnInitialized() { }
 
-    }
-
-    public virtual void OnEnter()
-    {
-
-    }
+    public virtual void OnEnter() { }
 
     public abstract void Update(float deltaTime);
 
-    public virtual void OnExit()
-    {
-
-    }
+    public virtual void OnExit() { }
 }
 
 public sealed class FSM<T>      // 더이상 변형이 없도록 sealed를 사용함

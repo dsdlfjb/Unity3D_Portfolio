@@ -16,6 +16,8 @@ public abstract class EnemyController : MonoBehaviour
     public Transform Target => _fov.NearestTarget;
     public LayerMask TargetMask => _fov._targetMask;
 
+    protected Vector3 _savePosition;
+
     // Start is called before the first frame update
     protected virtual void Start()
     {
@@ -27,6 +29,8 @@ public abstract class EnemyController : MonoBehaviour
 
         _anim = GetComponent<Animator>();
         _fov = GetComponent<FieldOfView>();
+
+        _savePosition = transform.position;
     }
 
     // Update is called once per frame
@@ -50,11 +54,14 @@ public abstract class EnemyController : MonoBehaviour
 
     private void OnAnimatorMove()
     {
-        Vector3 position = transform.position;
-        position.y = _agent.nextPosition.y;
+        if (_anim.GetBool("IsMove") == true)
+        {
+            Vector3 position = transform.position;
+            position.y = _agent.nextPosition.y;
 
-        _anim.rootPosition = position;
-        _agent.nextPosition = position;
+            _anim.rootPosition = position;
+            _agent.nextPosition = position;
+        }
     }
 
     public virtual bool IsAvailableAttack => false;

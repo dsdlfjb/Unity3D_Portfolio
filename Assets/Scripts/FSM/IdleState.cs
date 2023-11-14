@@ -45,8 +45,8 @@ public class IdleState : State<EnemyController>
                 _stateMachine.ChangeState<MoveState>();
         }
 
-        else if (_isPatrol && _stateMachine.ElapsedTimeInState > _idleTime)
-            _stateMachine.ChangeState<PatrolState>();
+        //else if (_isPatrol && _stateMachine.ElapsedTimeInState > _idleTime)
+        //    _stateMachine.ChangeState<PatrolState>();
     }
 
     public override void OnExit() { }

@@ -47,11 +47,17 @@ public class EnemyController_Melee : EnemyController, IAttackable, IDamagable
 
     private void OnAnimatorMove()
     {
-        Vector3 position = transform.position;
-        position.y = _agent.nextPosition.y;
+        if (_anim.GetBool("IsMove") == true)
+        {
+            Vector3 position = transform.position;
+            position.y = _savePosition.y;
 
-        _anim.rootPosition = position;
-        _agent.nextPosition = position;
+            _anim.rootPosition = position;
+            _agent.nextPosition = position;
+        }
+
+        else
+            _agent.nextPosition = transform.position;
     }
 
     #region IDamageable Interfaces

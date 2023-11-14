@@ -19,6 +19,10 @@ public class EnemyController_Range : EnemyController, IAttackable, IDamagable
     int _hitTriggerHash = Animator.StringToHash("HitTrigger");
 
     [SerializeField] Transform _projectilePoint;
+    [SerializeField] GameObject _hitEffectPrefab;
+
+    AttackBehaviour _attackBehaviour;
+    PlayerController _player;
 
     public override bool IsAvailableAttack
     {
@@ -58,11 +62,11 @@ public class EnemyController_Range : EnemyController, IAttackable, IDamagable
 
         base.Update();
     }
-
+    
     private void OnAnimatorMove()
     {
         Vector3 position = transform.position;
-        position.y = _agent.nextPosition.y;
+        position.y = _savePosition.y;
 
         _anim.rootPosition = position;
         _agent.nextPosition = position;
@@ -94,6 +98,17 @@ public class EnemyController_Range : EnemyController, IAttackable, IDamagable
                     if ((CurrentAttackBehaviour == null) || (CurrentAttackBehaviour._priority < behaviour._priority))
                         CurrentAttackBehaviour = behaviour;
                 }
+            }
+        }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Weapon"))
+        {
+            if(_player._isAttack)
+            {
+                TakeDamage(_attackBehaviour._damage, _hitEffectPrefab);
             }
         }
     }

@@ -4,7 +4,7 @@ using UnityEngine;
 
 [System.Serializable]
 public class Item : MonoBehaviour
-{
+{/*
     public int _id = 01;
     public string _name;
 
@@ -37,5 +37,5 @@ public class Item : MonoBehaviour
     void Update()
     {
         
-    }
+    }*/
 }

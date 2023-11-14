@@ -34,10 +34,7 @@ public class AttackState : State<EnemyController>
 
     }
 
-    public override void Update(float deltaTime)
-    {
-        
-    }
+    public override void Update(float deltaTime) { }
 
     public override void OnExit()
     {

@@ -58007,6 +58007,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Enemy
       objectReference: {fileID: 0}
+    - target: {fileID: 2848066689549880775, guid: 75ac907e52f1f8047b9f3026dc26aef8, type: 3}
+      propertyPath: _wayPoints.Array.size
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7541741441221639676, guid: 75ac907e52f1f8047b9f3026dc26aef8, type: 3}
       propertyPath: m_AnchorMax.x
       value: 0

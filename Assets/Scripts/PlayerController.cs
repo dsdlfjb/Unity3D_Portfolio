@@ -22,22 +22,15 @@ public class PlayerController : MonoBehaviour, IAttackable, IDamagable
 
     [SerializeField] bool _isRun;
     [SerializeField] bool _toggleCameraRotation;
-
+    [SerializeField] public bool _isAttack;
     Vector3 _moveDirection;
 
-    public float _maxHealth = 100f;
-    protected float _health;
+    public int _maxHealth = 100;
+    public int _health;
 
     public Transform _target;
     [SerializeField] Transform _hitPoint;
 
-    readonly int _moveHash = Animator.StringToHash("Move");
-    readonly int _moveSpeedHash = Animator.StringToHash("MoveSpeed");
-    //readonly int fallingHash = Animator.StringToHash("Falling");
-    readonly int _attackTriggerHash = Animator.StringToHash("AttackTrigger");
-    readonly int _attackIndexHash = Animator.StringToHash("AttackIndex");
-    readonly int _hitTriggerHash = Animator.StringToHash("HitTrigger");
-    readonly int _isAliveHash = Animator.StringToHash("IsAlive");
 
     private void Awake()
     {
@@ -48,12 +41,12 @@ public class PlayerController : MonoBehaviour, IAttackable, IDamagable
             _camera = Camera.main;
             _controller = this.GetComponent<CharacterController>();
             instance = this;
+
+            _health = _maxHealth;
         }
 
         else
             Destroy(this.gameObject);
-
-
     }
 
     // Update is called once per frame
@@ -75,6 +68,11 @@ public class PlayerController : MonoBehaviour, IAttackable, IDamagable
 
         if (_controller.isGrounded == false)
             _moveDirection.y += _gravity * Time.deltaTime;
+
+        if (Input.GetMouseButtonDown(0))
+        {
+            _anim.SetTrigger("AttackTrigger");
+        }
     }
 
     private void LateUpdate()
@@ -88,6 +86,7 @@ public class PlayerController : MonoBehaviour, IAttackable, IDamagable
 
     void InputMovement()
     {
+        /*
         _finalSpeed = (_isRun) ? _runSpeed : _speed;
 
         Vector3 forword = transform.TransformDirection(Vector3.forward);
@@ -100,6 +99,18 @@ public class PlayerController : MonoBehaviour, IAttackable, IDamagable
         float percent = ((_isRun) ? 1 : 0.5f) * moveDir.magnitude;
 
         _anim.SetFloat("Speed", percent, 0.1f, Time.deltaTime) ;
+        */
+
+        float horizontal = Input.GetAxis("Horizontal");
+        float vertical = Input.GetAxis("Vertical");
+
+        float offset = 0.5f + Input.GetAxis("Sprint") * 0.5f;
+
+        _anim.SetFloat("Horizontal", horizontal * offset);
+        _anim.SetFloat("Vertical", vertical * offset);
+
+        float moveSpeed = Mathf.Lerp(_speed, _runSpeed, Input.GetAxis("Sprint"));
+        transform.position += new Vector3(horizontal, 0, vertical) * _speed * Time.deltaTime;
 
         if (Input.GetKeyDown(KeyCode.Space))
         {
@@ -114,6 +125,9 @@ public class PlayerController : MonoBehaviour, IAttackable, IDamagable
             _moveDirection.y = _jumpForce;
     }
 
+    void AttackTrue() { _isAttack = true; }
+    void AttackFalse() { _isAttack = false; }
+
     #region IAttackable Interfaces
     [SerializeField] List<AttackBehaviour> _attackBehaviours = new List<AttackBehaviour>();
 
@@ -122,7 +136,9 @@ public class PlayerController : MonoBehaviour, IAttackable, IDamagable
     public void OnExecuteAttack(int attackIndex)
     {
         if (CurrentAttackBehaviour != null)
+        {
             CurrentAttackBehaviour.ExecuteAttack(_target.gameObject);
+        }
     }
     #endregion IAttackable Interfaces
 
@@ -145,11 +161,11 @@ public class PlayerController : MonoBehaviour, IAttackable, IDamagable
 
         if (IsAlive)
         {
-            _anim?.SetTrigger(_hitTriggerHash);
+            _anim.SetTrigger("HitTrigger");
         }
         else
         {
-            _anim?.SetBool(_isAliveHash, false);
+            _anim.SetBool("IsAlive", false);
         }
     }
     #endregion IDamagable Interfaces
