@@ -3,39 +3,30 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [System.Serializable]
-public class Item : MonoBehaviour
-{/*
-    public int _id = 01;
-    public string _name;
+public class Item
+{
+    public int _itemID;
+    public string _itemName;
+    public string _itemDescription;
+    public int _itemCount;
+    public Sprite _itemIcon;
+    public EItemType _eItemType;
 
-    public ItemBuff[] _buffs;
-    public Item()
+    public enum EItemType
     {
-        _id = -1;
-        _name = "";
+        Use,
+        Equip,
+        Quest,
+        Etc
     }
 
-    public Item(ItemObject itemObject)
+    public Item(int itemID, string itemName, string itemDescription,  EItemType eItemType,  int itemCount = 1)
     {
-        _name = itemObject._name;
-        _id = itemObject.data._id;
-
-        _buffs = ItemBuff(itemObject.data._buffs.Length);
-
-        for (int i = 0; i < _buffs.Length; i++)
-        {
-            _buffs[i] = new ItemBuff(itemObject.data._buffs[i].Min, itemObject.data._buff[i].Max);
-        }
+        _itemID = itemID;
+        _itemName = itemName;
+        _itemDescription = itemDescription;
+        _itemCount = itemCount;
+        _eItemType = eItemType;
+        _itemIcon = Resources.Load("Item/" + _itemID.ToString(), typeof(Sprite)) as Sprite;
     }
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }*/
 }
