@@ -5,28 +5,30 @@ using UnityEngine;
 [System.Serializable]
 public class Item
 {
-    public int _itemID;
-    public string _itemName;
-    public string _itemDescription;
-    public int _itemCount;
-    public Sprite _itemIcon;
-    public EItemType _eItemType;
+    public int _id = -1;
+    public string _name;
 
-    public enum EItemType
+    public ItemBuff[] _buffs;
+
+    public Item()
     {
-        Use,
-        Equip,
-        Quest,
-        Etc
+        _id = -1;
+        _name = "";
     }
 
-    public Item(int itemID, string itemName, string itemDescription,  EItemType eItemType,  int itemCount = 1)
+    public Item (ItemObject itemObject)
     {
-        _itemID = itemID;
-        _itemName = itemName;
-        _itemDescription = itemDescription;
-        _itemCount = itemCount;
-        _eItemType = eItemType;
-        _itemIcon = Resources.Load("ItemIcon/" + _itemID.ToString(), typeof(Sprite)) as Sprite;
+        _name = itemObject.name;
+        _id = itemObject._data._id;
+
+        _buffs = new ItemBuff[itemObject._data._buffs.Length];
+
+        for (int i =0; i <_buffs.Length; i++)
+        {
+            _buffs[i] = new ItemBuff(itemObject._data._buffs[i].Min, itemObject._data._buffs[i].Max)
+            {
+                _stats = itemObject._data._buffs[i]._stats
+            };
+        }
     }
 }

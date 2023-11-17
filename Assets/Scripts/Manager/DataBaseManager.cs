@@ -23,11 +23,10 @@ public class DataBaseManager : MonoBehaviour
     public string[] _switchName;
     public bool[] _switches;
 
-    public List<Item> _itemList = new List<Item>();
 
     // Start is called before the first frame update
     void Start()
     {
-        _itemList.Add(new Item(10001, "HP포션", "체력을 50 회복시켜주는 마법의 물약", Item.EItemType.Use));
+
     }
 }
