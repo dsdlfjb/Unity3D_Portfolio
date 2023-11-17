@@ -27,6 +27,6 @@ public class Item
         _itemDescription = itemDescription;
         _itemCount = itemCount;
         _eItemType = eItemType;
-        _itemIcon = Resources.Load("Item/" + _itemID.ToString(), typeof(Sprite)) as Sprite;
+        _itemIcon = Resources.Load("ItemIcon/" + _itemID.ToString(), typeof(Sprite)) as Sprite;
     }
 }

@@ -41,8 +41,8 @@ public class CameraMovement : MonoBehaviour
         _dirNormalized = _mainCamera.localPosition.normalized;
         _finalDist = _mainCamera.localPosition.magnitude;
 
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
+        //Cursor.lockState = CursorLockMode.Locked;
+        //Cursor.visible = false;
     }
 
     // Update is called once per frame
