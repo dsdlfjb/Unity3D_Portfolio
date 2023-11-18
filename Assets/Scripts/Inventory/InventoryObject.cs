@@ -5,7 +5,7 @@ using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
 using UnityEngine;
 
-[CreateAssetMenu(fileName ="New Inventory", menuName = "Inventory System/Inventoey")]
+[CreateAssetMenu(fileName ="New Inventory", menuName = "Inventory System/Inventory")]
 public class InventoryObject : ScriptableObject
 {
     public ItemDataBase _database;
@@ -80,5 +80,24 @@ public class InventoryObject : ScriptableObject
             itemB.UpdateSlot(itemA._item, itemA._amount);
             itemA.UpdateSlot(tmp._item, tmp._amount);
         }
+    }
+
+    [ContextMenu("Clear")]
+    public void Clear()
+    {
+        _container.Clear();
+    }
+
+    public void UseItem(InventorySlot slotToUse)
+    {
+        if (slotToUse.ItemObject == null || slotToUse._item._id < 0 || slotToUse._amount <= 0)
+        {
+            return;
+        }
+
+        ItemObject itemObject = slotToUse.ItemObject;
+        slotToUse.UpdateSlot(slotToUse._item, slotToUse._amount - 1);
+
+        OnUseItem.Invoke(itemObject);
     }
 }
