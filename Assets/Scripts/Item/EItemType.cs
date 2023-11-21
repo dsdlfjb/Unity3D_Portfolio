@@ -1,7 +1,7 @@
 public enum EItemType : int
 {
     Helmet = 0,
-    Chest = 1,
+    Armor = 1,
     Pants = 2,
     Boots = 3,
     Pauldrons = 4,
