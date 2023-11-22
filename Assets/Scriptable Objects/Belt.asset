@@ -1,0 +1,49 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 327f2bcfbab64cc4c8e53efa61fd78f0, type: 3}
+  m_Name: Belt
+  m_EditorClassIdentifier: 
+  _eItemType: 3
+  _isStackable: 0
+  _icon: {fileID: 21300000, guid: 7c802a6acbe4f244eaa13a3d6f0932f9, type: 3}
+  _modelPrefab: {fileID: 919132149155446097, guid: 278d3bbaad7ff3e47a511773742b390a, type: 3}
+  _data:
+    _id: 4
+    _name: 
+    _buffs: []
+  _bornNames:
+  - Chest_M
+  - Scapula_R
+  - Shoulder_R
+  - Elbow_R
+  - Wrist_R
+  - MiddleFinger1_R
+  - ThumbFinger1_R
+  - ThumbFinger2_R
+  - ThumbFinger3_R
+  - IndexFinger1_R
+  - RingFinger1_R
+  - PinkyFinger1_R
+  - jnt_shoulder_R
+  - Scapula_L
+  - Shoulder_L
+  - Elbow_L
+  - Wrist_L
+  - MiddleFinger1_L
+  - ThumbFinger1_L
+  - ThumbFinger2_L
+  - ThumbFinger3_L
+  - IndexFinger1_L
+  - RingFinger1_L
+  - PinkyFinger1_L
+  - jnt_shoulder_L
+  _description: 

@@ -13,7 +13,7 @@ public class TestItems : MonoBehaviour
         if (_databaseObject._itemObjects.Length > 0)
         {
             ItemObject newItemObject = _databaseObject._itemObjects[Random.Range(0, _databaseObject._itemObjects.Length - 1)];
-            //ItemObject newItemObject = databaseObject.itemObjects[databaseObject.itemObjects.Length - 1];
+            //ItemObject newItemObject = _databaseObject._itemObjects[_databaseObject._itemObjects.Length - 1];
             Item newItem = new Item(newItemObject);
 
             _inventoryObject.AddItem(newItem, 1);

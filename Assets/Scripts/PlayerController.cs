@@ -69,7 +69,7 @@ public class PlayerController : MonoBehaviour, IAttackable, IDamagable
         if (_controller.isGrounded == false)
             _moveDirection.y += _gravity * Time.deltaTime;
 
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetKeyDown(KeyCode.Alpha1))
         {
             _anim.SetTrigger("AttackTrigger");
         }

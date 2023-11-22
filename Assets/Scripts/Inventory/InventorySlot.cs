@@ -6,6 +6,7 @@ using System;
 [Serializable]
 public class InventorySlot
 {
+    // 장착 아이템
     public EItemType[] _allowedItems = new EItemType[0];
 
     [NonSerialized]

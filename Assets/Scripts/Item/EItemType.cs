@@ -1,13 +1,14 @@
 public enum EItemType : int
 {
     Helmet = 0,
-    Armor = 1,
+    Chest = 1,
     Pants = 2,
-    Boots = 3,
-    Pauldrons = 4,
-    Gloves = 5,
-    LeftWeapon = 6,
-    RightWeapon = 7,
+    Belt = 3,
+    Boots = 4,
+    Pauldrons = 5,
+    Gloves = 6,
+    LeftWeapon = 7,
+    RightWeapon = 8,
     Food,
     Default,
 }

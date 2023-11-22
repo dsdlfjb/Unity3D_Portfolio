@@ -10,7 +10,6 @@ public class StaticInventoryUI : InventoryUI
     public override void CreateSlots()
     {
         _slotUIs = new Dictionary<GameObject, InventorySlot>();
-
         for (int i = 0; i < _inventoryObject.Slots.Length; i++)
         {
             GameObject slotGO = _staticSlots[i];

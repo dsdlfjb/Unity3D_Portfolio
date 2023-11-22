@@ -11,7 +11,6 @@ public abstract class InventoryUI : MonoBehaviour
     public InventoryObject _inventoryObject;        // 사용될 인벤토리 오브젝트
     InventoryObject _previousInventory;     // 추후 활용이 가능한 인벤토리 오브젝트
 
-    // 
     public Dictionary<GameObject, InventorySlot> _slotUIs = new Dictionary<GameObject, InventorySlot>();
 
     private void Awake()
@@ -65,11 +64,11 @@ public abstract class InventoryUI : MonoBehaviour
     {
         MouseData.interfaceMouseIsOver = go.GetComponent<InventoryUI>();
     }
-
     public void OnExitInterface(GameObject go)
     {
         MouseData.interfaceMouseIsOver = null;
     }
+
 
     public void OnEnter(GameObject go)
     {
@@ -82,9 +81,9 @@ public abstract class InventoryUI : MonoBehaviour
         MouseData.slotHoveredOver = null;
     }
 
+
     public void OnStartDrag(GameObject go)
     {
-        // 드래그 할 때 이미지를 생성
         MouseData.tempItemBeingDragged = CreateDragImage(go);
     }
 

@@ -301,7 +301,7 @@ GameObject:
   - component: {fileID: 2992517605396454259}
   - component: {fileID: 1002348547265420694}
   m_Layer: 0
-  m_Name: Armor Slot
+  m_Name: Chest Slot
   m_TagString: Slot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

@@ -12,12 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 327f2bcfbab64cc4c8e53efa61fd78f0, type: 3}
   m_Name: Potion
   m_EditorClassIdentifier: 
-  _eItemType: 8
+  _eItemType: 9
   _isStackable: 1
   _icon: {fileID: 21300000, guid: 6dc5762501dd2df4da399f6c16a85907, type: 3}
   _modelPrefab: {fileID: 0}
   _data:
-    _id: 70
+    _id: 10
     _name: 
     _buffs: []
   _bornNames: []

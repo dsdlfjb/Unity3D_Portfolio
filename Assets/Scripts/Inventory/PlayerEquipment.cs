@@ -5,10 +5,10 @@ using UnityEngine;
 public class PlayerEquipment : MonoBehaviour
 {
     public InventoryObject _equipment;
-    public ItemObject[] _defaultItemObjects = new ItemObject[8];     // 기본적으로 장착시킬 아이템
+    public ItemObject[] _defaultItemObjects = new ItemObject[9];     // 기본적으로 장착시킬 아이템
 
     EquipmentCombiner _combiner;
-    ItemInstances[] _itemInstances = new ItemInstances[8];
+    ItemInstances[] _itemInstances = new ItemInstances[9];
 
     private void Awake()
     {
@@ -24,15 +24,19 @@ public class PlayerEquipment : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        // 장비창에 있는 슬롯들을 가져와서 캐릭터의 기본적인 것들을 설정
         foreach (InventorySlot slot in _equipment.Slots)
         {
             OnEquipItem(slot);
         }
     }
 
+    // 슬롯에 아이템이 들어왔을 때 아이템이 없다면 기본 아이템을 설정해주고,
+    // 아이템이 있다면 SkinnedMesh 또는 StaticMesh로 설정하는 함수
     void OnEquipItem (InventorySlot slot)
     {
         ItemObject itemObject = slot.ItemObject;
+
         if (itemObject == null)
         {
             EquipDefaultItemBy(slot._allowedItems[0]);
@@ -44,13 +48,14 @@ public class PlayerEquipment : MonoBehaviour
         switch (slot._allowedItems[0])
         {
             case EItemType.Helmet:
-            case EItemType.Armor:
+            case EItemType.Chest:
             case EItemType.Pants:
             case EItemType.Boots:
             case EItemType.Gloves:
                 _itemInstances[index] = EquipSkinnedItem(itemObject);
                 break;
 
+            case EItemType.Belt:
             case EItemType.Pauldrons:
             case EItemType.LeftWeapon:
             case EItemType.RightWeapon:
@@ -100,6 +105,7 @@ public class PlayerEquipment : MonoBehaviour
         return null;
     }
 
+    // 기본 장비 아이템을 장착해주는 함수
     void EquipDefaultItemBy(EItemType type)
     {
         int index = (int)type;
@@ -109,13 +115,14 @@ public class PlayerEquipment : MonoBehaviour
         switch(type)
         {
             case EItemType.Helmet:
-            case EItemType.Armor:
+            case EItemType.Chest:
             case EItemType.Pants:
             case EItemType.Boots:
             case EItemType.Gloves:
                 _itemInstances[index] = EquipSkinnedItem(itemObject);
                 break;
 
+            case EItemType.Belt:
             case EItemType.Pauldrons:
             case EItemType.LeftWeapon:
             case EItemType.RightWeapon:

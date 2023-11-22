@@ -15,10 +15,35 @@ MonoBehaviour:
   _eItemType: 2
   _isStackable: 0
   _icon: {fileID: 21300000, guid: 7d4f9cff490ea9e4e8de620ec2fadcb5, type: 3}
-  _modelPrefab: {fileID: 0}
+  _modelPrefab: {fileID: 919132149155446097, guid: 278d3bbaad7ff3e47a511773742b390a, type: 3}
   _data:
-    _id: 4
+    _id: 3
     _name: 
     _buffs: []
-  _bornNames: []
+  _bornNames:
+  - Chest_M
+  - Scapula_R
+  - Shoulder_R
+  - Elbow_R
+  - Wrist_R
+  - MiddleFinger1_R
+  - ThumbFinger1_R
+  - ThumbFinger2_R
+  - ThumbFinger3_R
+  - IndexFinger1_R
+  - RingFinger1_R
+  - PinkyFinger1_R
+  - jnt_shoulder_R
+  - Scapula_L
+  - Shoulder_L
+  - Elbow_L
+  - Wrist_L
+  - MiddleFinger1_L
+  - ThumbFinger1_L
+  - ThumbFinger2_L
+  - ThumbFinger3_L
+  - IndexFinger1_L
+  - RingFinger1_L
+  - PinkyFinger1_L
+  - jnt_shoulder_L
   _description: 
