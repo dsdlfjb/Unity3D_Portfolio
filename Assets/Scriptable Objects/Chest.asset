@@ -15,35 +15,39 @@ MonoBehaviour:
   _eItemType: 1
   _isStackable: 0
   _icon: {fileID: 21300000, guid: 603e026921ee6c44ab5c48b149bb31e9, type: 3}
-  _modelPrefab: {fileID: 919132149155446097, guid: 278d3bbaad7ff3e47a511773742b390a, type: 3}
+  _modelPrefab: {fileID: -23301706998148229, guid: f25ff8ba445843d4390fc6b06a90c8a7, type: 3}
   _data:
-    _id: 2
+    _id: 0
     _name: 
-    _buffs: []
+    _buffs:
+    - _stats: 4
+      _value: 0
+      _min: 20
+      _max: 20
   _bornNames:
+  - Root_M
+  - Spine1_M
+  - Spine2_M
   - Chest_M
+  - Neck_M
+  - Head_M
   - Scapula_R
   - Shoulder_R
   - Elbow_R
   - Wrist_R
-  - MiddleFinger1_R
   - ThumbFinger1_R
   - ThumbFinger2_R
   - ThumbFinger3_R
-  - IndexFinger1_R
-  - RingFinger1_R
   - PinkyFinger1_R
   - jnt_shoulder_R
   - Scapula_L
   - Shoulder_L
   - Elbow_L
   - Wrist_L
-  - MiddleFinger1_L
   - ThumbFinger1_L
   - ThumbFinger2_L
   - ThumbFinger3_L
-  - IndexFinger1_L
-  - RingFinger1_L
-  - PinkyFinger1_L
   - jnt_shoulder_L
+  - Hip_R
+  - Hip_L
   _description: 

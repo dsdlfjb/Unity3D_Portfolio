@@ -7,7 +7,8 @@ public enum ECharacterAttribute
     Agility,
     Intellect,
     Stamina,
-    Strength
+    Strength,
+    Defense
 }
 
 [System.Serializable]

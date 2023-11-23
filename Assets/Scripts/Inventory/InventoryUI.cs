@@ -97,7 +97,7 @@ public abstract class InventoryUI : MonoBehaviour
         GameObject dragImage = new GameObject();
 
         RectTransform rectTransform = dragImage.AddComponent<RectTransform>();
-        rectTransform.sizeDelta = new Vector2(50, 50);
+        rectTransform.sizeDelta = new Vector2(100, 100);
         dragImage.transform.SetParent(transform.parent);        // canvas가 drag이미지의 parent로 설정
         Image image = dragImage.AddComponent<Image>();
         image.sprite = _slotUIs[go].ItemObject._icon;

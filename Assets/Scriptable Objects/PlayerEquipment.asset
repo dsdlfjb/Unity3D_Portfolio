@@ -18,34 +18,34 @@ MonoBehaviour:
     _slots:
     - _allowedItems: 00000000
       _item:
-        _id: 1
-        _name: Helmet
+        _id: -1
+        _name: 
         _buffs: []
-      _amount: 1
+      _amount: 0
     - _allowedItems: 01000000
       _item:
-        _id: 2
+        _id: 0
         _name: Chest
         _buffs: []
       _amount: 1
     - _allowedItems: 02000000
       _item:
-        _id: 3
+        _id: 4
         _name: Pants
         _buffs: []
       _amount: 1
     - _allowedItems: 03000000
       _item:
-        _id: 4
+        _id: 5
         _name: Belt
         _buffs: []
       _amount: 1
     - _allowedItems: 04000000
       _item:
-        _id: 5
-        _name: 
+        _id: 1
+        _name: Boots
         _buffs: []
-      _amount: 0
+      _amount: 1
     - _allowedItems: 05000000
       _item:
         _id: 6
@@ -54,19 +54,19 @@ MonoBehaviour:
       _amount: 1
     - _allowedItems: 06000000
       _item:
-        _id: 7
-        _name: 
+        _id: 2
+        _name: Gloves
         _buffs: []
-      _amount: 0
+      _amount: 1
     - _allowedItems: 07000000
       _item:
-        _id: 8
+        _id: 7
         _name: Shield
         _buffs: []
       _amount: 1
     - _allowedItems: 08000000
       _item:
-        _id: 9
+        _id: 8
         _name: Sword
         _buffs: []
       _amount: 1

@@ -52,11 +52,11 @@ public class PlayerEquipment : MonoBehaviour
             case EItemType.Pants:
             case EItemType.Boots:
             case EItemType.Gloves:
+            case EItemType.Belt:
+            case EItemType.Pauldrons:
                 _itemInstances[index] = EquipSkinnedItem(itemObject);
                 break;
 
-            case EItemType.Belt:
-            case EItemType.Pauldrons:
             case EItemType.LeftWeapon:
             case EItemType.RightWeapon:
                 _itemInstances[index] = EquipMeshItem(itemObject);

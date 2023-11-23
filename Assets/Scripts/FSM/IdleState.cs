@@ -26,12 +26,6 @@ public class IdleState : State<EnemyController>
         _anim?.SetBool(_hashMove, false);
         _anim?.SetFloat(_hashMoveSpeed, 0);
         _controller?.Move(Vector3.zero);
-
-        if (_context is EnemyController_Patrol)
-        {
-            _isPatrol = true;
-            _idleTime = Random.Range(_minIdleTime, _maxIdleTime);
-        }
     }
 
     public override void Update(float deltaTime)

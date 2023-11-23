@@ -31,7 +31,6 @@ public class AttackState : State<EnemyController>
 
         _anim?.SetInteger(_attackIndexHash, _attackable.CurrentAttackBehaviour._animationIndex);
         _anim?.SetTrigger(_attackTriggerHash);
-
     }
 
     public override void Update(float deltaTime) { }

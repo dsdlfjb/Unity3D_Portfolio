@@ -17,8 +17,12 @@ MonoBehaviour:
   _icon: {fileID: 21300000, guid: 6dc5762501dd2df4da399f6c16a85907, type: 3}
   _modelPrefab: {fileID: 0}
   _data:
-    _id: 10
+    _id: 9
     _name: 
-    _buffs: []
+    _buffs:
+    - _stats: 2
+      _value: 0
+      _min: 20
+      _max: 20
   _bornNames: []
   _description: 
