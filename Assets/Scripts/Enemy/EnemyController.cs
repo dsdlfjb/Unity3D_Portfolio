@@ -1,73 +1,166 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.AI;
 
-public abstract class EnemyController : MonoBehaviour
+public enum EEnemyState
 {
-    protected FSM<EnemyController> _stateMachine;
-    public virtual float AttackRange => 3f;
+    Idle,
+    Move,
+    Attack,
+    Damage,
+    Die
+}
 
-    protected NavMeshAgent _agent;
-    protected Animator _anim;
+public class EnemyController : MonoBehaviour
+{
+    [Header("Idle State")]
+    public float _idleDelayTime = 2f;
+    float _curTime = 0;
 
-    FieldOfView _fov;
+    [Header("Move State")]
+    public float _speed = 5f;
+    public Transform _target;
 
-    public Transform Target => _fov.NearestTarget;
-    public LayerMask TargetMask => _fov._targetMask;
+    [Header("Attack State")]
+    public float _attackRange = 2f;
+    public float _attackDelayTime = 2f;
 
-    protected Vector3 _savePosition;
+    [Header("Damage State")]
+    int _hp = 100;
+    public float _damageDelayTime = 1f;
 
-    // Start is called before the first frame update
-    protected virtual void Start()
+    [Header("Damage State")]
+    public float _dieSpeed = 2f;
+    public float _dieYPosition = -2f;
+
+    CharacterController _controller;
+    Animator _anim;
+    EEnemyState _eState;
+
+    Dictionary<EEnemyState, EnemyState> _states = new Dictionary<EEnemyState, EnemyState>();
+
+    void Awake()
     {
-        _stateMachine = new FSM<EnemyController>(this, new IdleState());
-
-        _agent = GetComponent<NavMeshAgent>();
-        _agent.updatePosition = false;
-        _agent.updateRotation = true;
-
+        _eState = EEnemyState.Idle;
+        _controller = GetComponent<CharacterController>();
         _anim = GetComponent<Animator>();
-        _fov = GetComponent<FieldOfView>();
 
-        _savePosition = transform.position;
+        // State들을 Dictionary 에 추가
+        _states.Add(EEnemyState.Idle, new IdleState());
+        _states.Add(EEnemyState.Move, new MoveState());
+        _states.Add(EEnemyState.Attack, new AttackState());
+        _states.Add(EEnemyState.Damage, new DamageState());
+        _states.Add(EEnemyState.Die, new DeadState());
+
+        // 기본값을 Idle로 변경
+        ChangeState(EEnemyState.Idle);
     }
 
     // Update is called once per frame
-    protected virtual void Update()
+    void Update()
     {
-        _stateMachine.Update(Time.deltaTime);
+        // 사망 상태로 변경
+        if (_hp <= 0) ChangeState(EEnemyState.Die);
 
-        if (!(_stateMachine.CurrentState is MoveState) && !(_stateMachine.CurrentState is DeadState))
-            FaceTarget();
+        _states[_eState].Execute(this);
     }
 
-    void FaceTarget()
+    public void Idle()
     {
-        if (Target)
+        _curTime += Time.deltaTime;
+
+        if (_curTime > _idleDelayTime)
         {
-            Vector3 dir = (Target.position - transform.position).normalized;
-            Quaternion lookRotation = Quaternion.LookRotation(new Vector3(dir.x, 0, dir.z));
-            transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * 5f);
+            ChangeState(EEnemyState.Move);
+            _anim.SetTrigger("Move");
+            _curTime = 0;
         }
     }
 
-    private void OnAnimatorMove()
+    public void Move()
     {
-        if (_anim.GetBool("IsMove") == true)
-        {
-            Vector3 position = transform.position;
-            position.y = _agent.nextPosition.y;
+        Vector3 dir = _target.position - transform.position;
+        float distance = dir.magnitude;
 
-            _anim.rootPosition = position;
-            _agent.nextPosition = position;
+        // 공격 범위 안에 타겟이 들어오면 상태를 Attack 으로 전환
+        if (distance < _attackRange)
+        {
+            ChangeState(EEnemyState.Attack);
+            _curTime = _attackDelayTime;
+            return;
+        }
+
+        dir.y = 0;
+        dir.Normalize();
+
+        _controller.SimpleMove(dir * _speed);
+
+        // 이동하는 방향으로 부드럽게 회전
+        //transform.forward = Vector3.Lerp(transform.forward, dir, 10 * Time.deltaTime);
+        transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(dir), 10 * Time.deltaTime);
+    }
+
+    // Visual Debugging을 위한 함수
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(transform.position, _attackRange);
+    }
+
+    public void Attack()
+    {
+        _curTime += Time.deltaTime;
+
+        if (_curTime > _attackDelayTime)
+        {
+            _curTime = 0;
+            _anim.SetTrigger("AttackTrigger");
+            Debug.Log("공격!!!");
+        }
+
+        float distance = Vector3.Distance(transform.position, _target.position);
+
+        if (distance > _attackRange)
+        {
+            ChangeState(EEnemyState.Move);
+            _anim.SetTrigger("Move");
         }
     }
 
-    public virtual bool IsAvailableAttack => false;
-
-    public R ChangeState<R>() where R : State<EnemyController>
+    // 일정 시간 지나면 상태를 Idle로 전환
+    public void Damage()
     {
-        return _stateMachine.ChangeState<R>();
+        _curTime += Time.deltaTime;
+
+        if (_curTime > _damageDelayTime)
+        {
+            _curTime = 0;
+            ChangeState(EEnemyState.Idle);
+        }
+
+        OnDamageProcess();
+    }
+
+    // 피격 당했을 때 호출되는 함수
+    public void OnDamageProcess() { _hp--; }
+
+    public void Die()
+    {
+        // 나중에 쉐이더를 이용해서 타들어가는 것처럼 해주고 적 비활성화로 바꿈 (오브젝트 풀링 사용)
+        
+        gameObject.SetActive(false);
+    }
+
+    public void ChangeState(EEnemyState stateType)
+    {
+        // state에서 탈출
+        _states[_eState].Exit(this);
+
+        // state 변경
+        _eState = stateType;
+
+        // state 입장
+        _states[_eState].Enter(this);
     }
 }

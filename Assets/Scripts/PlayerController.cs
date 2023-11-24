@@ -31,6 +31,7 @@ public class PlayerController : MonoBehaviour, IAttackable, IDamagable
     public Transform _target;
     [SerializeField] Transform _hitPoint;
 
+    EnemyController _enemy;
 
     private void Awake()
     {
@@ -40,6 +41,7 @@ public class PlayerController : MonoBehaviour, IAttackable, IDamagable
             _anim = this.GetComponent<Animator>();
             _camera = Camera.main;
             _controller = this.GetComponent<CharacterController>();
+            _enemy = this.GetComponent<EnemyController>();
             instance = this;
 
             _health = _maxHealth;
@@ -52,6 +54,8 @@ public class PlayerController : MonoBehaviour, IAttackable, IDamagable
     // Update is called once per frame
     void Update()
     {
+        AttackFalse();
+
         if (Input.GetKey(KeyCode.LeftAlt))
             _toggleCameraRotation = true;       // 둘러보기 활성화
 
@@ -69,10 +73,7 @@ public class PlayerController : MonoBehaviour, IAttackable, IDamagable
         if (_controller.isGrounded == false)
             _moveDirection.y += _gravity * Time.deltaTime;
 
-        if (Input.GetKeyDown(KeyCode.Alpha1))
-        {
-            _anim.SetTrigger("AttackTrigger");
-        }
+        AttackTrue();
     }
 
     private void LateUpdate()
@@ -125,8 +126,24 @@ public class PlayerController : MonoBehaviour, IAttackable, IDamagable
             _moveDirection.y = _jumpForce;
     }
 
-    void AttackTrue() { _isAttack = true; }
+    void AttackTrue() 
+    {
+        if (Input.GetKeyDown(KeyCode.Alpha1))
+        {
+            _anim.SetTrigger("AttackTrigger");
+            _isAttack = true;
+        }
+    }
+
     void AttackFalse() { _isAttack = false; }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Enemy"))
+        {
+            _enemy.OnDamageProcess();
+        }
+    }
 
     #region IAttackable Interfaces
     [SerializeField] List<AttackBehaviour> _attackBehaviours = new List<AttackBehaviour>();

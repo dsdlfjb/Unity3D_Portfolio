@@ -3,7 +3,16 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - Ground
+  - EquipmentSystem
+  - Slot
+  - Portal
+  - MainInventory
+  - Slots
+  - Item
+  - ItemIcon
+  - Enemy
   layers:
   - Default
   - TransparentFX
@@ -11,9 +20,9 @@ TagManager:
   - 
   - Water
   - UI
-  - 
-  - 
-  - 
+  - Player
+  - Enemy
+  - MinimapCamera
   - 
   - 
   - 

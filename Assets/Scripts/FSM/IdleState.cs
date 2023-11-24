@@ -2,46 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class IdleState : State<EnemyController>
+public class IdleState : EnemyState
 {
-    public bool _isPatrol = true;
-    float _minIdleTime = 0f;
-    float _maxIdleTime = 3f;
-    float _idleTime = 0f;
-
-    Animator _anim;
-    CharacterController _controller;
-
-    protected int _hashMove = Animator.StringToHash("IsMove");
-    protected int _hashMoveSpeed = Animator.StringToHash("Speed");
-
-    public override void OnInitialized()
+    public override void Enter(EnemyController target)
     {
-        _anim = _context.GetComponent<Animator>();
-        _controller = _context.GetComponent<CharacterController>();
+        target.Idle();
     }
 
-    public override void OnEnter()
-    {
-        _anim?.SetBool(_hashMove, false);
-        _anim?.SetFloat(_hashMoveSpeed, 0);
-        _controller?.Move(Vector3.zero);
-    }
+    public override void Execute(EnemyController target) { }
 
-    public override void Update(float deltaTime)
-    {
-        if (_context.Target)
-        {
-            if (_context.IsAvailableAttack)
-                _stateMachine.ChangeState<AttackState>();
-
-            else
-                _stateMachine.ChangeState<MoveState>();
-        }
-
-        //else if (_isPatrol && _stateMachine.ElapsedTimeInState > _idleTime)
-        //    _stateMachine.ChangeState<PatrolState>();
-    }
-
-    public override void OnExit() { }
+    public override void Exit(EnemyController target) { }
 }
