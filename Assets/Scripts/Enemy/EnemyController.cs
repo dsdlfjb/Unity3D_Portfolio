@@ -2,8 +2,9 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
-public enum EEnemyState
+enum EEnemyState
 {
     Idle,
     Move,
@@ -34,36 +35,54 @@ public class EnemyController : MonoBehaviour
     public float _dieSpeed = 2f;
     public float _dieYPosition = -2f;
 
+    public GameObject _hitVFX;
+
     CharacterController _controller;
+    NPCBattleUI _hpBar;
     Animator _anim;
+    NavMeshAgent _agent;
+
     EEnemyState _eState;
 
-    Dictionary<EEnemyState, EnemyState> _states = new Dictionary<EEnemyState, EnemyState>();
 
     void Awake()
     {
         _eState = EEnemyState.Idle;
         _controller = GetComponent<CharacterController>();
+        _hpBar = GetComponent<NPCBattleUI>();
         _anim = GetComponent<Animator>();
+        _agent = GetComponent<NavMeshAgent>();
 
-        // State들을 Dictionary 에 추가
-        _states.Add(EEnemyState.Idle, new IdleState());
-        _states.Add(EEnemyState.Move, new MoveState());
-        _states.Add(EEnemyState.Attack, new AttackState());
-        _states.Add(EEnemyState.Damage, new DamageState());
-        _states.Add(EEnemyState.Die, new DeadState());
-
-        // 기본값을 Idle로 변경
-        ChangeState(EEnemyState.Idle);
+        _agent.enabled = false;
     }
 
     // Update is called once per frame
     void Update()
     {
-        // 사망 상태로 변경
-        if (_hp <= 0) ChangeState(EEnemyState.Die);
+        Debug.Log("현재 상태 : " + _eState);
 
-        _states[_eState].Execute(this);
+        switch (_eState)
+        {
+            case EEnemyState.Idle:
+                Idle();
+                break;
+
+            case EEnemyState.Move:
+                Move();
+                break;
+
+            case EEnemyState.Attack:
+                Attack();
+                break;
+
+            case EEnemyState.Damage:
+                //Damage();
+                break;
+
+            case EEnemyState.Die:
+                //Die();
+                break;
+        }
     }
 
     public void Idle()
@@ -72,7 +91,7 @@ public class EnemyController : MonoBehaviour
 
         if (_curTime > _idleDelayTime)
         {
-            ChangeState(EEnemyState.Move);
+            _eState = EEnemyState.Move;
             _anim.SetTrigger("Move");
             _curTime = 0;
         }
@@ -80,25 +99,26 @@ public class EnemyController : MonoBehaviour
 
     public void Move()
     {
+        if (_agent.enabled == false)
+            _agent.enabled = true;
+
         Vector3 dir = _target.position - transform.position;
         float distance = dir.magnitude;
 
         // 공격 범위 안에 타겟이 들어오면 상태를 Attack 으로 전환
         if (distance < _attackRange)
         {
-            ChangeState(EEnemyState.Attack);
+            _eState = EEnemyState.Attack;
             _curTime = _attackDelayTime;
+
+            // 길찾기 종료
+            _agent.enabled = false;
             return;
         }
 
-        dir.y = 0;
-        dir.Normalize();
+        // Agent를 이용한 길찾기
+        _agent.destination = _target.position;
 
-        _controller.SimpleMove(dir * _speed);
-
-        // 이동하는 방향으로 부드럽게 회전
-        //transform.forward = Vector3.Lerp(transform.forward, dir, 10 * Time.deltaTime);
-        transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(dir), 10 * Time.deltaTime);
     }
 
     // Visual Debugging을 위한 함수
@@ -106,61 +126,97 @@ public class EnemyController : MonoBehaviour
     {
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position, _attackRange);
+        /*
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawWireSphere(transform.position, _aggroRange);
+        */
     }
 
     public void Attack()
     {
         _curTime += Time.deltaTime;
+        Vector3 dir = _target.position - transform.position;
+        float distance = dir.magnitude;
 
         if (_curTime > _attackDelayTime)
         {
             _curTime = 0;
             _anim.SetTrigger("AttackTrigger");
-            Debug.Log("공격!!!");
         }
-
-        float distance = Vector3.Distance(transform.position, _target.position);
 
         if (distance > _attackRange)
         {
-            ChangeState(EEnemyState.Move);
+            _eState = EEnemyState.Move;
             _anim.SetTrigger("Move");
+            return;
         }
     }
 
     // 일정 시간 지나면 상태를 Idle로 전환
-    public void Damage()
+    private IEnumerator Coroutine_Damage()
     {
-        _curTime += Time.deltaTime;
-
-        if (_curTime > _damageDelayTime)
-        {
-            _curTime = 0;
-            ChangeState(EEnemyState.Idle);
-        }
-
-        OnDamageProcess();
+        // 1. 상태를 Damage로 전환
+        _eState = EEnemyState.Damage;
+        // 2. 애니메이션 Damage 상태로 전환
+        _anim.SetTrigger("HitTrigger");
+        // 3. 잠시 기다리기
+        yield return new WaitForSeconds(_damageDelayTime);
+        // 4. 기다린 다음 상태를 Idle로 전환
+        _eState = EEnemyState.Idle;
     }
 
     // 피격 당했을 때 호출되는 함수
-    public void OnDamageProcess() { _hp--; }
+    public void TakeDamage(int damageAmount)
+    {
+        if (_eState == EEnemyState.Die) return;
 
-    public void Die()
+        _agent.enabled = false;
+        _hp -= damageAmount;
+        _hpBar.Value -= damageAmount;
+        _hpBar.TakeDamage(damageAmount);
+        _anim.SetTrigger("HitTrigger");
+        _curTime = 0;
+
+        StopAllCoroutines();
+
+        if (_hp <= 0)
+            StartCoroutine(Coroutine_Die());
+
+        else
+            StartCoroutine(Coroutine_Damage());
+    }
+
+    private IEnumerator Coroutine_Die()
     {
         // 나중에 쉐이더를 이용해서 타들어가는 것처럼 해주고 적 비활성화로 바꿈 (오브젝트 풀링 사용)
-        
+        _eState = EEnemyState.Die;
+        _anim.SetTrigger("Die");
+        _controller.enabled = false;
+
+        yield return new WaitForSeconds(2);
+
+        while (transform.position.y < _dieYPosition)
+        {
+            transform.position += Vector3.down * _dieSpeed * Time.deltaTime;
+            yield return null;
+        }
+
         gameObject.SetActive(false);
     }
 
-    public void ChangeState(EEnemyState stateType)
+    public void StartDealDamage()
     {
-        // state에서 탈출
-        _states[_eState].Exit(this);
+        GetComponentInChildren<EnemyDamageDealer>().StartDealDamage();
+    }
 
-        // state 변경
-        _eState = stateType;
+    public void EndDealDamage()
+    {
+        GetComponentInChildren<EnemyDamageDealer>().EndDealDamage();
+    }
 
-        // state 입장
-        _states[_eState].Enter(this);
+    public void HitVFX(Vector3 hitPosition)
+    {
+        GameObject hit = Instantiate(_hitVFX, hitPosition, Quaternion.identity);
+        Destroy(hit, 3f);
     }
 }

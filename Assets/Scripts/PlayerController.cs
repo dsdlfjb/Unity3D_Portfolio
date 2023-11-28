@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerController : MonoBehaviour, IAttackable, IDamagable
+public class PlayerController : MonoBehaviour
 {
     public static PlayerController instance;
 
@@ -30,8 +30,10 @@ public class PlayerController : MonoBehaviour, IAttackable, IDamagable
 
     public Transform _target;
     [SerializeField] Transform _hitPoint;
+    [SerializeField] GameObject _hitVFX;
 
     EnemyController _enemy;
+    NPCBattleUI _hpBar;
 
     private void Awake()
     {
@@ -42,6 +44,7 @@ public class PlayerController : MonoBehaviour, IAttackable, IDamagable
             _camera = Camera.main;
             _controller = this.GetComponent<CharacterController>();
             _enemy = this.GetComponent<EnemyController>();
+            _hpBar = this.GetComponent<NPCBattleUI>();
             instance = this;
 
             _health = _maxHealth;
@@ -87,21 +90,6 @@ public class PlayerController : MonoBehaviour, IAttackable, IDamagable
 
     void InputMovement()
     {
-        /*
-        _finalSpeed = (_isRun) ? _runSpeed : _speed;
-
-        Vector3 forword = transform.TransformDirection(Vector3.forward);
-        Vector3 right = transform.TransformDirection(Vector3.right);
-
-        Vector3 moveDir = right * Input.GetAxisRaw("Horizontal") + forword * Input.GetAxisRaw("Vertical");
-
-        _controller.Move(moveDir.normalized * _finalSpeed * Time.deltaTime);
-
-        float percent = ((_isRun) ? 1 : 0.5f) * moveDir.magnitude;
-
-        _anim.SetFloat("Speed", percent, 0.1f, Time.deltaTime) ;
-        */
-
         float horizontal = Input.GetAxis("Horizontal");
         float vertical = Input.GetAxis("Vertical");
 
@@ -137,53 +125,25 @@ public class PlayerController : MonoBehaviour, IAttackable, IDamagable
 
     void AttackFalse() { _isAttack = false; }
 
-    private void OnTriggerEnter(Collider other)
+    public void TakeDamage(int damageAmount)
     {
-        if (other.CompareTag("Enemy"))
-        {
-            _enemy.OnDamageProcess();
-        }
+        _health -= damageAmount;
+        _hpBar.Value -= damageAmount;
+        _anim.SetTrigger("HitTrigger");
+
+        if (_health <= 0)
+            Die();
     }
 
-    #region IAttackable Interfaces
-    [SerializeField] List<AttackBehaviour> _attackBehaviours = new List<AttackBehaviour>();
-
-    public AttackBehaviour CurrentAttackBehaviour { get; private set; }
-
-    public void OnExecuteAttack(int attackIndex)
+    void Die()
     {
-        if (CurrentAttackBehaviour != null)
-        {
-            CurrentAttackBehaviour.ExecuteAttack(_target.gameObject);
-        }
+        _anim.SetTrigger("Die");
+        gameObject.SetActive(false);
     }
-    #endregion IAttackable Interfaces
 
-    #region IDamagable Interfaces
-    public bool IsAlive => _health > 0;
-
-    public void TakeDamage(int damage, GameObject damageEffectPrefab)
+    public void HitVFX(Vector3 hitPosition)
     {
-        if (!IsAlive)
-        {
-            return;
-        }
-
-        _health -= damage;
-
-        if (damageEffectPrefab)
-        {
-            Instantiate<GameObject>(damageEffectPrefab, _hitPoint);
-        }
-
-        if (IsAlive)
-        {
-            _anim.SetTrigger("HitTrigger");
-        }
-        else
-        {
-            _anim.SetBool("IsAlive", false);
-        }
+        GameObject hit = Instantiate(_hitVFX, hitPosition, Quaternion.identity);
+        Destroy(hit, 3f);
     }
-    #endregion IDamagable Interfaces
 }

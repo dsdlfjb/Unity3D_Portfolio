@@ -7,6 +7,11 @@ public class StaticInventoryUI : InventoryUI
 {
     public GameObject[] _staticSlots = null;
 
+    private void Start()
+    {
+        gameObject.SetActive(false);
+    }
+
     public override void CreateSlots()
     {
         _slotUIs = new Dictionary<GameObject, InventorySlot>();

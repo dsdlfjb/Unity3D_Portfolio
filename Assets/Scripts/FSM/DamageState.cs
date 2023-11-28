@@ -8,7 +8,7 @@ public class DamageState : EnemyState
 
     public override void Execute(EnemyController target) 
     {
-        target.Damage();
+
     }
 
     public override void Exit(EnemyController target) { }

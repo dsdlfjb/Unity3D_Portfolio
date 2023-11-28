@@ -122,7 +122,7 @@ NavMeshSettings:
     preserveTilesOutsideBounds: 0
     debug:
       m_Flags: 0
-  m_NavMeshData: {fileID: 0}
+  m_NavMeshData: {fileID: 23800000, guid: b5acba32e2c7bb346812ec242e840dd7, type: 2}
 --- !u!1 &146488707
 GameObject:
   m_ObjectHideFlags: 0
@@ -234,7 +234,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!64 &431553336
 MeshCollider:
@@ -327,7 +327,7 @@ GameObject:
   - component: {fileID: 627233074}
   - component: {fileID: 627233073}
   - component: {fileID: 627233072}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Capsule
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -531,6 +531,18 @@ PrefabInstance:
     - target: {fileID: 1058623118203640728, guid: 65c510cdd62c10f44bcb906e815d90ca, type: 3}
       propertyPath: m_Name
       value: Enemy
+      objectReference: {fileID: 0}
+    - target: {fileID: 1843584849225727467, guid: 65c510cdd62c10f44bcb906e815d90ca, type: 3}
+      propertyPath: _target
+      value: 
+      objectReference: {fileID: 627233075}
+    - target: {fileID: 2848066689549880768, guid: 65c510cdd62c10f44bcb906e815d90ca, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5416309419072542086, guid: 65c510cdd62c10f44bcb906e815d90ca, type: 3}
+      propertyPath: m_RootOrder
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5564094991529684395, guid: 65c510cdd62c10f44bcb906e815d90ca, type: 3}
       propertyPath: m_IsActive

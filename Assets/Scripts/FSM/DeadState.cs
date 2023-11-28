@@ -6,7 +6,7 @@ public class DeadState : EnemyState
 {
     public override void Enter(EnemyController target)
     {
-        target.Die();
+
     }
 
     public override void Execute(EnemyController target) { }

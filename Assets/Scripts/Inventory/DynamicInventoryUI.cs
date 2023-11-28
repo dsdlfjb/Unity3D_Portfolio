@@ -12,6 +12,11 @@ public class DynamicInventoryUI : InventoryUI
 
     [Min(1), SerializeField] protected int _numberOfColumn = 4;
 
+    private void Start()
+    {
+        gameObject.SetActive(false);    
+    }
+
     public override void CreateSlots()
     {
         _slotUIs = new Dictionary<GameObject, InventorySlot>();

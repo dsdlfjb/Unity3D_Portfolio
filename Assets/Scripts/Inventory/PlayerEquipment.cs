@@ -10,6 +10,8 @@ public class PlayerEquipment : MonoBehaviour
     EquipmentCombiner _combiner;
     ItemInstances[] _itemInstances = new ItemInstances[9];
 
+    public GameObject _currentWeaponInHand;
+
     private void Awake()
     {
         _combiner = new EquipmentCombiner(gameObject);
@@ -156,5 +158,15 @@ public class PlayerEquipment : MonoBehaviour
         {
             RemoveItemBy(slot._allowedItems[0]);
         }
+    }
+
+    public void StartDealDamage()
+    {
+        _currentWeaponInHand.GetComponentInChildren<DamageDealer>().StartDealDamage();
+    }
+
+    public void EndDealDamage()
+    {
+        _currentWeaponInHand.GetComponentInChildren<DamageDealer>().EndDealDamage();
     }
 }
