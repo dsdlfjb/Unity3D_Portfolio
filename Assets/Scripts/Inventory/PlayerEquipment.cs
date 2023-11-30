@@ -159,14 +159,4 @@ public class PlayerEquipment : MonoBehaviour
             RemoveItemBy(slot._allowedItems[0]);
         }
     }
-
-    public void StartDealDamage()
-    {
-        _currentWeaponInHand.GetComponentInChildren<DamageDealer>().StartDealDamage();
-    }
-
-    public void EndDealDamage()
-    {
-        _currentWeaponInHand.GetComponentInChildren<DamageDealer>().EndDealDamage();
-    }
 }
