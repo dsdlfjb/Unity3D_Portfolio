@@ -7,9 +7,9 @@ public class DamageDealer : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.tag == "Dragon")
+        if (other.tag == "Enemy")
         {
-            transform.parent == other.transform;
+            transform.parent = other.transform;
             other.GetComponent<DragonController>().TakeDamage(_damage);
         }
     }
