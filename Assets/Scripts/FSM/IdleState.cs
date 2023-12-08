@@ -6,7 +6,7 @@ public class IdleState : EnemyState
 {
     public override void Enter(EnemyController target)
     {
-        target.Idle();
+
     }
 
     public override void Execute(EnemyController target) { }

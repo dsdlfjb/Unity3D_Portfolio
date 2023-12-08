@@ -11,8 +11,11 @@ public class AttackState : EnemyState
 
     public override void Execute(EnemyController target) 
     {
-        target.Attack();
+
     }
 
-    public override void Exit(EnemyController target) { }
+    public override void Exit(EnemyController target) 
+    {
+
+    }
 }

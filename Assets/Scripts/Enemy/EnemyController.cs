@@ -204,16 +204,6 @@ public class EnemyController : MonoBehaviour
         gameObject.SetActive(false);
     }
 
-    public void StartDealDamage()
-    {
-        GetComponentInChildren<EnemyDamageDealer>().StartDealDamage();
-    }
-
-    public void EndDealDamage()
-    {
-        GetComponentInChildren<EnemyDamageDealer>().EndDealDamage();
-    }
-
     public void HitVFX(Vector3 hitPosition)
     {
         GameObject hit = Instantiate(_hitVFX, hitPosition, Quaternion.identity);

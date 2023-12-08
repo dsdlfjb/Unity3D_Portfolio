@@ -101,6 +101,9 @@ public class PlayerController : MonoBehaviour
         float moveSpeed = Mathf.Lerp(_speed, _runSpeed, Input.GetAxis("Sprint"));
         transform.position += new Vector3(horizontal, 0, vertical) * _speed * Time.deltaTime;
 
+        // 진행 방향으로 캐릭터 회전
+        transform.rotation = Quaternion.Euler(0, Mathf.Atan2(horizontal, vertical) * Mathf.Rad2Deg, 0);
+
         if (Input.GetKeyDown(KeyCode.Space))
         {
             JumpTo();
@@ -114,7 +117,7 @@ public class PlayerController : MonoBehaviour
             _moveDirection.y = _jumpForce;
     }
 
-    void AttackTrue() 
+    void AttackTrue()
     {
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
@@ -138,12 +141,6 @@ public class PlayerController : MonoBehaviour
     void Die()
     {
         _anim.SetTrigger("Die");
-        gameObject.SetActive(false);
-    }
-
-    public void HitVFX(Vector3 hitPosition)
-    {
-        GameObject hit = Instantiate(_hitVFX, hitPosition, Quaternion.identity);
-        Destroy(hit, 3f);
+        //gameObject.SetActive(false);
     }
 }

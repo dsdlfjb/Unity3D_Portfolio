@@ -9,7 +9,7 @@ public class MoveState : EnemyState
 
     public override void Execute(EnemyController target) 
     {
-        target.Move();
+
     }
 
     public override void Exit(EnemyController target) { }
