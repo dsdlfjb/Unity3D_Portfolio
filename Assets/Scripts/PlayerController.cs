@@ -11,29 +11,19 @@ public class PlayerController : MonoBehaviour
 
     Animator _anim;
     Camera _camera;
-    CharacterController _controller;
+    NPCBattleUI _hpBar;
+    Movement3D _movement3D;
 
-    [SerializeField] float _speed = 5f;
-    [SerializeField] float _runSpeed = 8f;
-    [SerializeField] float _finalSpeed;
-    [SerializeField] float _gravity = -9.81f;
-    [SerializeField] float _jumpForce = 3f;
     [SerializeField] float _smoothness = 10f;
 
     [SerializeField] bool _isRun;
     [SerializeField] bool _toggleCameraRotation;
     [SerializeField] public bool _isAttack;
-    Vector3 _moveDirection;
+
+    [SerializeField] Transform _cameraTransform;
 
     public int _maxHealth = 100;
     public int _health;
-
-    public Transform _target;
-    [SerializeField] Transform _hitPoint;
-    [SerializeField] GameObject _hitVFX;
-
-    EnemyController _enemy;
-    NPCBattleUI _hpBar;
 
     private void Awake()
     {
@@ -42,9 +32,9 @@ public class PlayerController : MonoBehaviour
             DontDestroyOnLoad(this.gameObject);
             _anim = this.GetComponent<Animator>();
             _camera = Camera.main;
-            _controller = this.GetComponent<CharacterController>();
-            _enemy = this.GetComponent<EnemyController>();
             _hpBar = this.GetComponent<NPCBattleUI>();
+            _movement3D = this.GetComponent<Movement3D>();
+
             instance = this;
 
             _health = _maxHealth;
@@ -72,10 +62,6 @@ public class PlayerController : MonoBehaviour
             _isRun = false;
 
         InputMovement();
-
-        if (_controller.isGrounded == false)
-            _moveDirection.y += _gravity * Time.deltaTime;
-
         AttackTrue();
     }
 
@@ -90,36 +76,30 @@ public class PlayerController : MonoBehaviour
 
     void InputMovement()
     {
-        float horizontal = Input.GetAxis("Horizontal");
-        float vertical = Input.GetAxis("Vertical");
+        float x = Input.GetAxis("Horizontal");
+        float z = Input.GetAxis("Vertical");
 
-        float offset = 0.5f + Input.GetAxis("Sprint") * 0.5f;
+        // 애니메이션 파라미터 설정
+        _anim.SetFloat("Horizontal", x);
+        _anim.SetFloat("Vertical", z);
 
-        _anim.SetFloat("Horizontal", horizontal * offset);
-        _anim.SetFloat("Vertical", vertical * offset);
-
-        float moveSpeed = Mathf.Lerp(_speed, _runSpeed, Input.GetAxis("Sprint"));
-        transform.position += new Vector3(horizontal, 0, vertical) * _speed * Time.deltaTime;
-
-        // 진행 방향으로 캐릭터 회전
-        transform.rotation = Quaternion.Euler(0, Mathf.Atan2(horizontal, vertical) * Mathf.Rad2Deg, 0);
+        // 이동 속도 설정 (앞으로 이동할 때만 5, 나머지는 2)
+        _movement3D.MoveSpeed = z > 0 ? 5f : 2f;
+        // 이동함수 호출 (카메라가 보고 있는 방향을 기준으로 방향키에 따라 이동)
+        _movement3D.MoveTo(_cameraTransform.rotation * new Vector3(x, 0, z));
+        // 회전 설정 (항상 앞만 보도록 캐릭터와 회전은 카메라와 같은 회전 값으로 설정)
+        transform.rotation = Quaternion.Euler(0, _cameraTransform.eulerAngles.y, 0);
 
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            JumpTo();
             _anim.SetTrigger("DoJump");
+            _movement3D.JumpTo();       // 점프 함수 호출
         }
-    }
-
-    void JumpTo()
-    {
-        if (_controller.isGrounded == true)
-            _moveDirection.y = _jumpForce;
     }
 
     void AttackTrue()
     {
-        if (Input.GetKeyDown(KeyCode.Alpha1))
+        if (Input.GetMouseButtonDown(0))
         {
             _anim.SetTrigger("AttackTrigger");
             _isAttack = true;

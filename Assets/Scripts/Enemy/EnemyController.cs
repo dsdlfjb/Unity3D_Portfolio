@@ -35,12 +35,12 @@ public class EnemyController : MonoBehaviour
     public float _dieSpeed = 2f;
     public float _dieYPosition = -2f;
 
-    public GameObject _hitVFX;
-
     CharacterController _controller;
     NPCBattleUI _hpBar;
     Animator _anim;
     NavMeshAgent _agent;
+    SkinnedMeshRenderer _meshRenderer;
+    Color _originColor;
 
     EEnemyState _eState;
 
@@ -52,6 +52,8 @@ public class EnemyController : MonoBehaviour
         _hpBar = GetComponent<NPCBattleUI>();
         _anim = GetComponent<Animator>();
         _agent = GetComponent<NavMeshAgent>();
+        _meshRenderer = GetComponentInChildren<SkinnedMeshRenderer>();
+        _originColor = _meshRenderer.material.color;
 
         _agent.enabled = false;
     }
@@ -159,6 +161,9 @@ public class EnemyController : MonoBehaviour
         _eState = EEnemyState.Damage;
         // 2. 애니메이션 Damage 상태로 전환
         _anim.SetTrigger("HitTrigger");
+
+        StartCoroutine(Coroutine_OnHitColor());
+
         // 3. 잠시 기다리기
         yield return new WaitForSeconds(_damageDelayTime);
         // 4. 기다린 다음 상태를 Idle로 전환
@@ -171,10 +176,7 @@ public class EnemyController : MonoBehaviour
         if (_eState == EEnemyState.Die) return;
 
         _agent.enabled = false;
-        _hp -= damageAmount;
-        _hpBar.Value -= damageAmount;
-        _hpBar.TakeDamage(damageAmount);
-        _anim.SetTrigger("HitTrigger");
+
         _curTime = 0;
 
         StopAllCoroutines();
@@ -204,9 +206,13 @@ public class EnemyController : MonoBehaviour
         gameObject.SetActive(false);
     }
 
-    public void HitVFX(Vector3 hitPosition)
+    private IEnumerator Coroutine_OnHitColor()
     {
-        GameObject hit = Instantiate(_hitVFX, hitPosition, Quaternion.identity);
-        Destroy(hit, 3f);
+        // 색을 빨간색으로 변경한 후 0.1초 후에 원래 색상으로 변경
+        _meshRenderer.material.color = Color.red;
+
+        yield return new WaitForSeconds(0.1f);
+
+        _meshRenderer.material.color = _originColor;
     }
 }
