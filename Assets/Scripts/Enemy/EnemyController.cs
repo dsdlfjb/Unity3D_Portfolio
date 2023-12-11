@@ -194,6 +194,8 @@ public class EnemyController : MonoBehaviour
         _eState = EEnemyState.Die;
         _anim.SetTrigger("Die");
         _controller.enabled = false;
+        GameManager.Instance.GetExp();
+        UIManager.Instance.EXP_UP();
 
         yield return new WaitForSeconds(2);
 
