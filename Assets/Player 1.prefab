@@ -2902,21 +2902,6 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &5572609186230991168
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 736165288232389895}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1c6d835d4ee13fa4e9cf4a6eeb98dbd7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _moveSpeed: 5
-  _gravity: -9.81
-  _jumpForce: 3
 --- !u!114 &58410152251447701
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2935,8 +2920,24 @@ MonoBehaviour:
   _toggleCameraRotation: 0
   _isAttack: 0
   _cameraTransform: {fileID: 0}
+  _currentWeaponInHand: {fileID: 6502407362972982699}
   _maxHealth: 100
   _health: 0
+--- !u!114 &5572609186230991168
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 736165288232389895}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1c6d835d4ee13fa4e9cf4a6eeb98dbd7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _moveSpeed: 5
+  _gravity: -9.81
+  _jumpForce: 3
 --- !u!114 &6680838457286013846
 MonoBehaviour:
   m_ObjectHideFlags: 0

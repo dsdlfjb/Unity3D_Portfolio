@@ -9,17 +9,17 @@ public class ItemObject : ScriptableObject
     public bool _isStackable;
 
     public Sprite _icon;
-    public GameObject _modelPrefab;     // Ä³¸¯ÅÍ¿¡°Ô ÀåÂøµÉ ÇÁ¸®ÆÕ
+    public GameObject _modelPrefab;     // ìºë¦­í„°ì—ê²Œ ì¥ì°©ë  í”„ë¦¬íŒ¹
 
     public Item _data = new Item();
 
-    // Ä³¸¯ÅÍ Á¶ÇÕ ½Ã½ºÅÛ
+    // ìºë¦­í„° ì¡°í•© ì‹œìŠ¤í…œ
     public List<string> _bornNames = new List<string>();
 
     [TextArea(15, 20)]
     public string _description;
 
-    // µ¥ÀÌÅÍ¸¦ º¯°æÇÏ¸é È£ÃâµÇ´Â ÇÔ¼ö
+    // ë°ì´í„°ë¥¼ ë³€ê²½í•˜ë©´ í˜¸ì¶œë˜ëŠ” í•¨ìˆ˜
     private void OnValidate()
     {
         _bornNames.Clear();

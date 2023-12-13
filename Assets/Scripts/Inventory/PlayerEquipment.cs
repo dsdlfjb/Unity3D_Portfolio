@@ -5,7 +5,7 @@ using UnityEngine;
 public class PlayerEquipment : MonoBehaviour
 {
     public InventoryObject _equipment;
-    public ItemObject[] _defaultItemObjects = new ItemObject[9];     // ±âº»ÀûÀ¸·Î ÀåÂø½ÃÅ³ ¾ÆÀÌÅÛ
+    public ItemObject[] _defaultItemObjects = new ItemObject[9];     // ï¿½âº»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Å³ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 
     EquipmentCombiner _combiner;
     ItemInstances[] _itemInstances = new ItemInstances[9];
@@ -26,15 +26,15 @@ public class PlayerEquipment : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        // ÀåºñÃ¢¿¡ ÀÖ´Â ½½·ÔµéÀ» °¡Á®¿Í¼­ Ä³¸¯ÅÍÀÇ ±âº»ÀûÀÎ °ÍµéÀ» ¼³Á¤
+        // ï¿½ï¿½ï¿½Ã¢ï¿½ï¿½ ï¿½Ö´ï¿½ ï¿½ï¿½ï¿½Ôµï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Í¼ï¿½ Ä³ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½âº»ï¿½ï¿½ï¿½ï¿½ ï¿½Íµï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
         foreach (InventorySlot slot in _equipment.Slots)
         {
             OnEquipItem(slot);
         }
     }
 
-    // ½½·Ô¿¡ ¾ÆÀÌÅÛÀÌ µé¾î¿ÔÀ» ¶§ ¾ÆÀÌÅÛÀÌ ¾ø´Ù¸é ±âº» ¾ÆÀÌÅÛÀ» ¼³Á¤ÇØÁÖ°í,
-    // ¾ÆÀÌÅÛÀÌ ÀÖ´Ù¸é SkinnedMesh ¶Ç´Â StaticMesh·Î ¼³Á¤ÇÏ´Â ÇÔ¼ö
+    // ï¿½ï¿½ï¿½Ô¿ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ù¸ï¿½ ï¿½âº» ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö°ï¿½,
+    // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ö´Ù¸ï¿½ SkinnedMesh ï¿½Ç´ï¿½ StaticMeshï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï´ï¿½ ï¿½Ô¼ï¿½
     void OnEquipItem (InventorySlot slot)
     {
         ItemObject itemObject = slot.ItemObject;
@@ -107,7 +107,7 @@ public class PlayerEquipment : MonoBehaviour
         return null;
     }
 
-    // ±âº» Àåºñ ¾ÆÀÌÅÛÀ» ÀåÂøÇØÁÖ´Â ÇÔ¼ö
+    // ï¿½âº» ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö´ï¿½ ï¿½Ô¼ï¿½
     void EquipDefaultItemBy(EItemType type)
     {
         int index = (int)type;
@@ -159,4 +159,6 @@ public class PlayerEquipment : MonoBehaviour
             RemoveItemBy(slot._allowedItems[0]);
         }
     }
+    
+    
 }

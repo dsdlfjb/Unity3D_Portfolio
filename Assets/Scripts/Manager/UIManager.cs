@@ -33,7 +33,7 @@ public class UIManager : MonoBehaviour
     private void Update()
     {
         ShowInventoryUI();
-        ShowInventoryUI();
+        ShowEquipmentUI();
         Level_UP();
     }
 
@@ -45,7 +45,7 @@ public class UIManager : MonoBehaviour
         }
     }
 
-    void SowEquipmentUI()
+    void ShowEquipmentUI()
     {
         if (Input.GetKeyDown("e"))
         {

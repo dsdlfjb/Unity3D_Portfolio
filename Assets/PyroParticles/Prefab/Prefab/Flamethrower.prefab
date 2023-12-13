@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 464710}
   - component: {fileID: 19891030}
   - component: {fileID: 19923492}
-  m_Layer: 8
+  m_Layer: 0
   m_Name: FlamethrowerSmoke
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -50,7 +50,7 @@ ParticleSystem:
   emitterVelocityMode: 1
   looping: 1
   prewarm: 0
-  playOnAwake: 0
+  playOnAwake: 1
   useUnscaledTime: 0
   autoRandomSeed: 1
   startDelay:
@@ -4703,7 +4703,9 @@ GameObject:
   - component: {fileID: 412958}
   - component: {fileID: 11498850}
   - component: {fileID: 8256470}
-  m_Layer: 8
+  - component: {fileID: 6632938849431176667}
+  - component: {fileID: 8153176654102721681}
+  m_Layer: 0
   m_Name: Flamethrower
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4897,6 +4899,32 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!65 &6632938849431176667
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 163286}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 5.13181, y: 4.158161, z: 20.523825}
+  m_Center: {x: 0.32036257, y: 0.83624244, z: 10.686597}
+--- !u!114 &8153176654102721681
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 163286}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ade776048d9740747a1d5bf9c8c4f8b1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _damage: 0
 --- !u!1 &188146
 GameObject:
   m_ObjectHideFlags: 0
@@ -4908,7 +4936,7 @@ GameObject:
   - component: {fileID: 437028}
   - component: {fileID: 19810244}
   - component: {fileID: 19900262}
-  m_Layer: 8
+  m_Layer: 0
   m_Name: FlamethrowerFire
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4947,7 +4975,7 @@ ParticleSystem:
   emitterVelocityMode: 1
   looping: 1
   prewarm: 0
-  playOnAwake: 0
+  playOnAwake: 1
   useUnscaledTime: 0
   autoRandomSeed: 1
   startDelay:
