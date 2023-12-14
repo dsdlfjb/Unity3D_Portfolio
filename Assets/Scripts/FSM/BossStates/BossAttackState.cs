@@ -69,12 +69,7 @@ public class BossAttackState : BossBaseState
                 return;
             }
         }
-        
-        
     }
 
-    public override void Exit(DragonController target)
-    {
-        
-    }
+    public override void Exit(DragonController target) { }
 }

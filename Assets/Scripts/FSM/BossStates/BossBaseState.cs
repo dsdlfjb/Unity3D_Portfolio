@@ -13,18 +13,9 @@ public enum BossStateEnum
 
 public abstract class BossBaseState : IState<DragonController>
 {
-    public virtual void Enter(DragonController target)
-    {
-        
-    }
+    public virtual void Enter(DragonController target) { }
 
-    public virtual void Execute(DragonController target)
-    {
-        
-    }
+    public virtual void Execute(DragonController target) { }
 
-    public virtual void Exit(DragonController target)
-    {
-        
-    }
+    public virtual void Exit(DragonController target) { }
 }

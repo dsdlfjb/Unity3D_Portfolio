@@ -9,13 +9,7 @@ public class BossIdleState : BossBaseState
         target.ChangeState(BossStateEnum.Chase);
     }
 
-    public override void Execute(DragonController target)
-    {
-        
-    }
+    public override void Execute(DragonController target) { }
 
-    public override void Exit(DragonController target)
-    {
-        
-    }
+    public override void Exit(DragonController target) { }
 }

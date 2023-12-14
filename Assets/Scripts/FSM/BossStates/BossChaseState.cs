@@ -30,8 +30,5 @@ public class BossChaseState : BossBaseState
         }
     }
 
-    public override void Exit(DragonController target)
-    {
-        
-    }
+    public override void Exit(DragonController target) { }
 }

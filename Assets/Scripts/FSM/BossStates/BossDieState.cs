@@ -12,10 +12,7 @@ public class BossDieState : BossBaseState
         target.StartCoroutine(Coroutine_Die(target));
     }
 
-    public override void Execute(DragonController target)
-    {
-        
-    }
+    public override void Execute(DragonController target) { }
 
     IEnumerator Coroutine_Die(DragonController target)
     {

@@ -147,9 +147,6 @@ public class DragonController : MonoBehaviour
 
     #endregion
     
-    
-    
-
     public void TakeDamage(int damageAmount)
     {
         _hp -= damageAmount;
@@ -169,6 +166,5 @@ public class DragonController : MonoBehaviour
         {
             ChangeState(BossStateEnum.Damage);
         }
-        
     }
 }

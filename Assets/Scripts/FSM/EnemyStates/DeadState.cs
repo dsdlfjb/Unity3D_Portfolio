@@ -14,6 +14,7 @@ public class DeadState : EnemyState
         // 데미지를 받는 상태인지 아닌지 확인
         target.Anim.SetTrigger("Die");
         target.Agent.enabled = false;
+        target.Mat.SetFloat("_DissolveAmount", Mathf.Sin(Time.time) / 2 + 0.5f);
         GameManager.Instance.GetExp();
         UIManager.Instance.EXP_UP();
 

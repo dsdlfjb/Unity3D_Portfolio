@@ -29,6 +29,15 @@ public class EnemyController : MonoBehaviour
 
     CharacterController _controller;
     NPCBattleUI _hpBar;
+    Material _mat;
+    public Material Mat
+    {
+        get
+        {
+            return _mat;
+        }
+    }
+
     Animator _anim;
     public Animator Anim
     {
@@ -37,16 +46,19 @@ public class EnemyController : MonoBehaviour
             return _anim;
         }
     }
+
     NavMeshAgent _agent;
     public NavMeshAgent Agent
     {
         get { return _agent; }
     }
+
     SkinnedMeshRenderer _meshRenderer;
     public SkinnedMeshRenderer MeshRenderer
     {
         get { return _meshRenderer; }
     }
+
     Color _originColor;
     public Color OriginColor
     {
@@ -68,6 +80,7 @@ public class EnemyController : MonoBehaviour
         _anim = GetComponent<Animator>();
         _agent = GetComponent<NavMeshAgent>();
         _meshRenderer = GetComponentInChildren<SkinnedMeshRenderer>();
+        _mat = GetComponentInChildren<SkinnedMeshRenderer>().material;
         _target = FindObjectOfType<PlayerController>().transform;
         _originColor = _meshRenderer.material.color;
         _agent.enabled = false;
@@ -108,7 +121,6 @@ public class EnemyController : MonoBehaviour
             enemyState.Execute(this);
         }
     }
-
 
     public void Attack()
     {

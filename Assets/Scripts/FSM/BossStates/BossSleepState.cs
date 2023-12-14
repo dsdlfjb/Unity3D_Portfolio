@@ -4,10 +4,7 @@ using UnityEngine;
 
 public class BossSleepState : BossBaseState
 {
-    public override void Enter(DragonController target)
-    {
-        
-    }
+    public override void Enter(DragonController target) { }
 
     public override void Execute(DragonController target)
     {

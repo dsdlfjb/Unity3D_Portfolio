@@ -8,6 +8,8 @@ public class IdleState : EnemyState
 
     public override void Execute(EnemyController target)
     {
+        target.Mat.SetFloat("_DissolveAmount", 0);
+
         target._curTime += Time.deltaTime;
         
         if (target._curTime > target._idleDelayTime)
