@@ -131,6 +131,7 @@ MonoBehaviour:
     m_StyleName: Bold
     m_PointSize: 90
     m_Scale: 1
+    m_UnitsPerEM: 0
     m_LineHeight: 105.46875
     m_AscentLine: 83.49609
     m_CapLine: 64
@@ -147,6 +148,21 @@ MonoBehaviour:
     m_StrikethroughThickness: 4.3945312
     m_TabWidth: 22
   m_GlyphTable:
+  - m_Index: 4
+    m_Metrics:
+      m_Width: 0
+      m_Height: 0
+      m_HorizontalBearingX: 0
+      m_HorizontalBearingY: 0
+      m_HorizontalAdvance: 22.40625
+    m_GlyphRect:
+      m_X: 0
+      m_Y: 0
+      m_Width: 0
+      m_Height: 0
+    m_Scale: 1
+    m_AtlasIndex: 0
+    m_ClassDefinitionType: 0
   - m_Index: 45
     m_Metrics:
       m_Width: 13.1875
@@ -161,6 +177,7 @@ MonoBehaviour:
       m_Height: 64
     m_Scale: 1
     m_AtlasIndex: 0
+    m_ClassDefinitionType: 0
   - m_Index: 67
     m_Metrics:
       m_Width: 40.03125
@@ -175,6 +192,7 @@ MonoBehaviour:
       m_Height: 10
     m_Scale: 1
     m_AtlasIndex: 0
+    m_ClassDefinitionType: 0
   - m_Index: 73
     m_Metrics:
       m_Width: 43.140625
@@ -189,6 +207,7 @@ MonoBehaviour:
       m_Height: 50
     m_Scale: 1
     m_AtlasIndex: 0
+    m_ClassDefinitionType: 0
   - m_Index: 82
     m_Metrics:
       m_Width: 41.046875
@@ -203,6 +222,7 @@ MonoBehaviour:
       m_Height: 49
     m_Scale: 1
     m_AtlasIndex: 0
+    m_ClassDefinitionType: 0
   - m_Index: 83
     m_Metrics:
       m_Width: 45.03125
@@ -217,6 +237,7 @@ MonoBehaviour:
       m_Height: 50
     m_Scale: 1
     m_AtlasIndex: 0
+    m_ClassDefinitionType: 0
   - m_Index: 86
     m_Metrics:
       m_Width: 26.890625
@@ -231,6 +252,7 @@ MonoBehaviour:
       m_Height: 49
     m_Scale: 1
     m_AtlasIndex: 0
+    m_ClassDefinitionType: 0
   - m_Index: 88
     m_Metrics:
       m_Width: 28.265625
@@ -245,6 +267,7 @@ MonoBehaviour:
       m_Height: 61
     m_Scale: 1
     m_AtlasIndex: 0
+    m_ClassDefinitionType: 0
   - m_Index: 90
     m_Metrics:
       m_Width: 44.203125
@@ -259,6 +282,7 @@ MonoBehaviour:
       m_Height: 48
     m_Scale: 1
     m_AtlasIndex: 0
+    m_ClassDefinitionType: 0
   - m_Index: 93
     m_Metrics:
       m_Width: 44.921875
@@ -273,6 +297,7 @@ MonoBehaviour:
       m_Height: 68
     m_Scale: 1
     m_AtlasIndex: 0
+    m_ClassDefinitionType: 0
   - m_Index: 399
     m_Metrics:
       m_Width: 55.375
@@ -287,7 +312,12 @@ MonoBehaviour:
       m_Height: 15
     m_Scale: 1
     m_AtlasIndex: 0
+    m_ClassDefinitionType: 0
   m_CharacterTable:
+  - m_ElementType: 1
+    m_Unicode: 32
+    m_GlyphIndex: 4
+    m_Scale: 1
   - m_ElementType: 1
     m_Unicode: 73
     m_GlyphIndex: 45

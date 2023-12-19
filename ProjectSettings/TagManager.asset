@@ -4,18 +4,16 @@
 TagManager:
   serializedVersion: 2
   tags:
-  - Enemy
-  - Slot
-  - EquipmentSystem
-  - Slots
-  - Portal
-  - Fire
-  - ItemIcon
-  - Item
-  - MainInventory
-  - Weapon
-  - Waypoint
   - Ground
+  - EquipmentSystem
+  - Slot
+  - Portal
+  - MainInventory
+  - Slots
+  - Item
+  - ItemIcon
+  - Enemy
+  - Waypoint
   layers:
   - Default
   - TransparentFX
@@ -24,9 +22,9 @@ TagManager:
   - Water
   - UI
   - 
-  - Enemy
+  - MinimapCamera
   - Player
-  - 
+  - Enemy
   - 
   - 
   - 

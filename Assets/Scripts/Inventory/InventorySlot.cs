@@ -6,7 +6,7 @@ using System;
 [Serializable]
 public class InventorySlot
 {
-    // ìž¥ì°© ì•„ì´í…œ
+    // ÀåÂø ¾ÆÀÌÅÛ
     public EItemType[] _allowedItems = new EItemType[0];
 
     [NonSerialized]
@@ -33,16 +33,16 @@ public class InventorySlot
     public InventorySlot() => UpdateSlot(new Item(), 0);
     public InventorySlot(Item item, int amount) => UpdateSlot(item, amount);
 
-    // ì•„ì´í…œì„ ì‚­ì œí•˜ëŠ” í•¨ìˆ˜
+    // ¾ÆÀÌÅÛÀ» »èÁ¦ÇÏ´Â ÇÔ¼ö
     public void RemoveItem() => UpdateSlot(new Item(), 0);
 
-    // ìŠ¬ë¡¯ì— ìžˆëŠ” ì•„ì´í…œì˜ ê°œìˆ˜ë¥¼ ì¡°ì •í•  ìˆ˜ ìžˆëŠ” í•¨ìˆ˜
+    // ½½·Ô¿¡ ÀÖ´Â ¾ÆÀÌÅÛÀÇ °³¼ö¸¦ Á¶Á¤ÇÒ ¼ö ÀÖ´Â ÇÔ¼ö
     public void AddAmount(int value) => UpdateSlot(_item, _amount += value);
 
-    // ìŠ¬ë¡¯ì— ì•„ì´í…œì´ ë“œëž˜ê·¸ ì•¤ ë“œë¡­ì„ í•  ë•Œ ë°œìƒë˜ëŠ” í•¨ìˆ˜
+    // ½½·Ô¿¡ ¾ÆÀÌÅÛÀÌ µå·¡±× ¾Ø µå·ÓÀ» ÇÒ ¶§ ¹ß»ýµÇ´Â ÇÔ¼ö
     public void UpdateSlot(Item item, int amount)
     {
-        // ìƒˆë¡­ê²Œ ìŠ¬ë¡¯ì´ ê°±ì‹ ë˜ëŠ” ê²½ìš°
+        // »õ·Ó°Ô ½½·ÔÀÌ °»½ÅµÇ´Â °æ¿ì
         if (amount <= 0)
             item = new Item();
 
@@ -54,7 +54,7 @@ public class InventorySlot
     
     public bool CanPlaceInSlot(ItemObject itemObject)
     {
-        // ë¹„ì–´ìžˆëŠ” ì˜¤ë¸Œì íŠ¸ì´ë©´ ìž¥ì°© ì‹œí‚¬ ìˆ˜ ìžˆë„ë¡
+        // ºñ¾îÀÖ´Â ¿ÀºêÁ§Æ®ÀÌ¸é ÀåÂø ½ÃÅ³ ¼ö ÀÖµµ·Ï
         if (_allowedItems.Length <= 0 || itemObject == null || itemObject._data._id < 0)
             return true;
 

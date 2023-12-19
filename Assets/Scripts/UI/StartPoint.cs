@@ -1,11 +1,11 @@
-// ìºë¦­í„°ê°€ ì”¬ì „í™˜ì„ í–ˆì„ ë•Œ ì‹œì‘ë˜ëŠ” ì§€ì ì„ ì •í•˜ëŠ” ìŠ¤í¬ë¦½íŠ¸
+// Ä³¸¯ÅÍ°¡ ¾ÀÀüÈ¯À» ÇßÀ» ¶§ ½ÃÀÛµÇ´Â ÁöÁ¡À» Á¤ÇÏ´Â ½ºÅ©¸³Æ®
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class StartPoint : MonoBehaviour
 {
-    public string _startPoint;      // í”Œë ˆì´ì–´ê°€ ì‹œì‘ë  ìœ„ì¹˜
+    public string _startPoint;      // ÇÃ·¹ÀÌ¾î°¡ ½ÃÀÛµÉ À§Ä¡
 
     PlayerController _player;
     CameraMovement _camera;
