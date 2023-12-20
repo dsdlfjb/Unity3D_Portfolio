@@ -48,7 +48,7 @@ public class UISkillInfoSlot : MonoBehaviour
 
             foreach (var item in proceedSkillSlot)
             {
-                if (item.info.curSkillPoint == 0 && button)
+                if (item.info.curSkillPoint != item.info.maxPoint && button)
                     button.interactable = false;
             }
 

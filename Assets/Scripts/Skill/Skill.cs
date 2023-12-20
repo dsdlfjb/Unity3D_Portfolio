@@ -32,12 +32,13 @@ public class Skill : MonoBehaviour
     Collider _skillCollision;
     [SerializeField]
     float _delay;
+    [SerializeField]
     ParticleSystem _ps;
     private SkillInfo _skillInfo;
     private void Awake()
     {
         _skillCollision = GetComponent<Collider>();
-        _ps = GetComponent<ParticleSystem>();
+        _ps = GetComponentInChildren<ParticleSystem>();
     }
     public void CastSkill(SkillInfo skillInfo)
     {

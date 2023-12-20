@@ -17,6 +17,7 @@ class SkillModule : MonoBehaviour
 
 
                 if (PlayerController.instance._mana < skillPanel[i].info.mana) return;
+
                 PlayerController.instance._mana -= (int)skillPanel[i].info.mana;
                 var obj = Instantiate(skillPanel[i].info.skill, transform) as Skill;
                 obj.CastSkill(skillPanel[i].info);
