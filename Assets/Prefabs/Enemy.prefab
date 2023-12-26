@@ -358,14 +358,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _idleDelayTime: 2
+  _curTime: 0
   _speed: 5
   _target: {fileID: 4655370154441560301, guid: 60770bdb4dc667c45bea53db0339dc05, type: 3}
+  _attackDealObject: {fileID: 4328193411069570821}
   _attackRange: 2
   _attackDelayTime: 2
   _damageDelayTime: 1
   _dieSpeed: 2
   _dieYPosition: -2
-  _hitVFX: {fileID: 0}
+  _respawnTime: 3
+  _respawnVec: {x: 0, y: 0, z: 0}
 --- !u!1 &1217349088835866916
 GameObject:
   m_ObjectHideFlags: 0
@@ -1235,11 +1238,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 4611947775643799023}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7094da253f3592247a0e2d6d2f8b0d2a, type: 3}
+  m_Script: {fileID: 11500000, guid: 17ec1ef96f4918f49acb5d9e3484a516, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  weaponLength: 1.9
-  weaponDamage: 10
+  target: {fileID: 5463115735742122583, guid: 60770bdb4dc667c45bea53db0339dc05, type: 3}
+  layer:
+    serializedVersion: 2
+    m_Bits: 256
+  weaponLength: 1.04
+  weaponDamage: 0
 --- !u!1 &4732922353044294529
 GameObject:
   m_ObjectHideFlags: 0

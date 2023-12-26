@@ -10,8 +10,6 @@ public class GameManager : MonoBehaviour
     public int _level;
     public int _exp;
     public int[] _nextExp = { };
-    // [KMONG] 스킬포인트 변수 추가
-    public int _skillPoint;
 
     private void Awake()
     {
@@ -27,7 +25,7 @@ public class GameManager : MonoBehaviour
         if (_exp == _nextExp[Mathf.Min(_level, _nextExp.Length - 1)])
         {
             // [KMONG] 스킬포인트 변수 사용
-            _skillPoint++;
+            PlayerController.instance._skillPoint += 5;
             _level += 5;
             _exp = 0;
         }

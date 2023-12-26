@@ -1,220 +1,171 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-enum EEnemyState
-{
-    Idle,
-    Move,
-    Attack,
-    Damage,
-    Die
-}
-
 public class EnemyController : MonoBehaviour
 {
-    [Header("Idle State")]
-    public float _idleDelayTime = 2f;
-    float _curTime = 0;
+    [Header("Idle State")] public float _idleDelayTime = 2f;
+    public float _curTime = 0;
 
-    [Header("Move State")]
-    public float _speed = 5f;
+    [Header("Move State")] public float _speed = 5f;
     public Transform _target;
 
-    [Header("Attack State")]
+    [Header("Attack State")] 
+    public GameObject _attackDealObject;
     public float _attackRange = 2f;
     public float _attackDelayTime = 2f;
 
-    [Header("Damage State")]
-    int _hp = 100;
+    [Header("Damage State")] int _hp = 100;
+    private int _maxHp;
     public float _damageDelayTime = 1f;
 
-    [Header("Damage State")]
-    public float _dieSpeed = 2f;
+    [Header("Damage State")] public float _dieSpeed = 2f;
     public float _dieYPosition = -2f;
+
+    [Header("Respawn")]
+    public float _respawnTime = 3;
+    public Vector3 _respawnVec;
 
     CharacterController _controller;
     NPCBattleUI _hpBar;
+    Material _mat;
+    public Material Mat
+    {
+        get
+        {
+            return _mat;
+        }
+    }
+
     Animator _anim;
+    public Animator Anim
+    {
+        get
+        {
+            return _anim;
+        }
+    }
+
     NavMeshAgent _agent;
+    public NavMeshAgent Agent
+    {
+        get { return _agent; }
+    }
+
     SkinnedMeshRenderer _meshRenderer;
+    public SkinnedMeshRenderer MeshRenderer
+    {
+        get { return _meshRenderer; }
+    }
+
     Color _originColor;
+    public Color OriginColor
+    {
+        get
+        {
+            return _originColor;
+        }
+    }
 
     EEnemyState _eState;
-
-
+    EnemyState enemyState;
+    Dictionary<EEnemyState,EnemyState> enemyStates = new Dictionary<EEnemyState, EnemyState>();
+    
     void Awake()
     {
-        _eState = EEnemyState.Idle;
+        _respawnVec = transform.position;
         _controller = GetComponent<CharacterController>();
         _hpBar = GetComponent<NPCBattleUI>();
         _anim = GetComponent<Animator>();
         _agent = GetComponent<NavMeshAgent>();
         _meshRenderer = GetComponentInChildren<SkinnedMeshRenderer>();
+        _mat = GetComponentInChildren<SkinnedMeshRenderer>().material;
+        _target = FindObjectOfType<PlayerController>().transform;
         _originColor = _meshRenderer.material.color;
-
         _agent.enabled = false;
+        _maxHp = _hp;
+
+        enemyStates = new Dictionary<EEnemyState, EnemyState>();
+        enemyStates.Add(EEnemyState.Idle,new IdleState());
+        enemyStates.Add(EEnemyState.Move,new MoveState());
+        enemyStates.Add(EEnemyState.Attack,new AttackState());
+        enemyStates.Add(EEnemyState.Damage,new DamageState());
+        enemyStates.Add(EEnemyState.Die,new DeadState());
+    }
+
+    private void OnEnable()
+    {
+        _hp = _maxHp;
+        
+        _eState = EEnemyState.Idle;
+        enemyState = enemyStates[_eState];
+    }
+
+    // ìƒíƒœ ë³€ê²½ ë©”ì†Œë“œ
+    public void ChangeState(EEnemyState newState)
+    {
+        enemyState.Exit(this);
+        _eState = newState;
+        enemyState = enemyStates[newState];
+        enemyState.Enter(this);
     }
 
     // Update is called once per frame
     void Update()
     {
-        Debug.Log("ÇöÀç »óÅÂ : " + _eState);
+        Debug.Log("Enemy State : " + _eState);
 
-        switch (_eState)
+        if (_eState != EEnemyState.Die && _eState != EEnemyState.Damage )
         {
-            case EEnemyState.Idle:
-                Idle();
-                break;
-
-            case EEnemyState.Move:
-                Move();
-                break;
-
-            case EEnemyState.Attack:
-                Attack();
-                break;
-
-            case EEnemyState.Damage:
-                //Damage();
-                break;
-
-            case EEnemyState.Die:
-                //Die();
-                break;
+            enemyState.Execute(this);
         }
-    }
-
-    public void Idle()
-    {
-        _curTime += Time.deltaTime;
-
-        if (_curTime > _idleDelayTime)
-        {
-            _eState = EEnemyState.Move;
-            _anim.SetTrigger("Move");
-            _curTime = 0;
-        }
-    }
-
-    public void Move()
-    {
-        if (_agent.enabled == false)
-            _agent.enabled = true;
-
-        Vector3 dir = _target.position - transform.position;
-        float distance = dir.magnitude;
-
-        // °ø°İ ¹üÀ§ ¾È¿¡ Å¸°ÙÀÌ µé¾î¿À¸é »óÅÂ¸¦ Attack À¸·Î ÀüÈ¯
-        if (distance < _attackRange)
-        {
-            _eState = EEnemyState.Attack;
-            _curTime = _attackDelayTime;
-
-            // ±æÃ£±â Á¾·á
-            _agent.enabled = false;
-            return;
-        }
-
-        // Agent¸¦ ÀÌ¿ëÇÑ ±æÃ£±â
-        _agent.destination = _target.position;
-
-    }
-
-    // Visual DebuggingÀ» À§ÇÑ ÇÔ¼ö
-    private void OnDrawGizmos()
-    {
-        Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(transform.position, _attackRange);
-        /*
-        Gizmos.color = Color.yellow;
-        Gizmos.DrawWireSphere(transform.position, _aggroRange);
-        */
     }
 
     public void Attack()
     {
-        _curTime += Time.deltaTime;
-        Vector3 dir = _target.position - transform.position;
-        float distance = dir.magnitude;
-
-        if (_curTime > _attackDelayTime)
-        {
-            _curTime = 0;
-            _anim.SetTrigger("AttackTrigger");
-        }
-
-        if (distance > _attackRange)
-        {
-            _eState = EEnemyState.Move;
-            _anim.SetTrigger("Move");
-            return;
-        }
+        _curTime = 0;
+        _anim.SetTrigger("AttackTrigger");
     }
 
-    // ÀÏÁ¤ ½Ã°£ Áö³ª¸é »óÅÂ¸¦ Idle·Î ÀüÈ¯
-    private IEnumerator Coroutine_Damage()
-    {
-        // 1. »óÅÂ¸¦ Damage·Î ÀüÈ¯
-        _eState = EEnemyState.Damage;
-        // 2. ¾Ö´Ï¸ŞÀÌ¼Ç Damage »óÅÂ·Î ÀüÈ¯
-        _anim.SetTrigger("HitTrigger");
-
-        StartCoroutine(Coroutine_OnHitColor());
-
-        // 3. Àá½Ã ±â´Ù¸®±â
-        yield return new WaitForSeconds(_damageDelayTime);
-        // 4. ±â´Ù¸° ´ÙÀ½ »óÅÂ¸¦ Idle·Î ÀüÈ¯
-        _eState = EEnemyState.Idle;
-    }
-
-    // ÇÇ°İ ´çÇßÀ» ¶§ È£ÃâµÇ´Â ÇÔ¼ö
+    // ëª¬ìŠ¤í„°ê°€ ë°ë¯¸ì§€ë¥¼ ë°›ëŠ” í•¨ìˆ˜
     public void TakeDamage(int damageAmount)
     {
         if (_eState == EEnemyState.Die) return;
-
+    
         _agent.enabled = false;
 
+        _hp -= damageAmount;
         _curTime = 0;
-
+    
         StopAllCoroutines();
 
         if (_hp <= 0)
-            StartCoroutine(Coroutine_Die());
-
-        else
-            StartCoroutine(Coroutine_Damage());
-    }
-
-    private IEnumerator Coroutine_Die()
-    {
-        // ³ªÁß¿¡ ½¦ÀÌ´õ¸¦ ÀÌ¿ëÇØ¼­ Å¸µé¾î°¡´Â °ÍÃ³·³ ÇØÁÖ°í Àû ºñÈ°¼ºÈ­·Î ¹Ù²Ş (¿ÀºêÁ§Æ® Ç®¸µ »ç¿ë)
-        _eState = EEnemyState.Die;
-        _anim.SetTrigger("Die");
-        _controller.enabled = false;
-        GameManager.Instance.GetExp();
-        UIManager.Instance.EXP_UP();
-
-        yield return new WaitForSeconds(2);
-
-        while (transform.position.y < _dieYPosition)
         {
-            transform.position += Vector3.down * _dieSpeed * Time.deltaTime;
-            yield return null;
+            ChangeState(EEnemyState.Die);
         }
 
-        gameObject.SetActive(false);
+        else
+        {
+            ChangeState(EEnemyState.Damage);
+        }
+
+        Debug.Log($"cur Enemy HP {_hp}");
     }
 
-    private IEnumerator Coroutine_OnHitColor()
+    public void RespawnObj()
     {
-        // »öÀ» »¡°£»öÀ¸·Î º¯°æÇÑ ÈÄ 0.1ÃÊ ÈÄ¿¡ ¿ø·¡ »ö»óÀ¸·Î º¯°æ
-        _meshRenderer.material.color = Color.red;
+        transform.position = _respawnVec;
+        gameObject.SetActive(true);
+    }
 
-        yield return new WaitForSeconds(0.1f);
+    public void StartDealDamage()
+    {
+        _attackDealObject.GetComponentInChildren<EnemyDamageDealer>().StartDealDamage();
+    }
 
-        _meshRenderer.material.color = _originColor;
+    public void EndDealDamage()
+    {
+        _attackDealObject.GetComponentInChildren<EnemyDamageDealer>().EndDealDamage();
     }
 }

@@ -89,7 +89,7 @@ public class UISkillPanel : MonoBehaviour, IPointerClickHandler
         }
         else
         {
-            if (dragSlot.IsEmpty())
+            if (dragSlot.IsEmpty() && slot.info.curSkillPoint > 0)
             {
                 dragSlot.info = slot.info;
                 dragSlot.SetSlot();
@@ -100,7 +100,6 @@ public class UISkillPanel : MonoBehaviour, IPointerClickHandler
                 if (slot.isQuickSlot)
                 {
                     slot.info = dragSlot.info;
-
                 }
                 dragSlot.info = new SkillInfo();
                 dragSlot.gameObject.SetActive(false);
